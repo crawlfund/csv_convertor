@@ -1,0 +1,9 @@
+c:\users\owlwang\documents\visual studio 2013\Projects\DataAnalyzer\DataAnalyzer\bin\Debug\DataAnalyzer.exe.config
+c:\users\owlwang\documents\visual studio 2013\Projects\DataAnalyzer\DataAnalyzer\bin\Debug\DataAnalyzer.exe
+c:\users\owlwang\documents\visual studio 2013\Projects\DataAnalyzer\DataAnalyzer\bin\Debug\DataAnalyzer.pdb
+c:\users\owlwang\documents\visual studio 2013\Projects\DataAnalyzer\DataAnalyzer\obj\Debug\DataAnalyzer.csprojResolveAssemblyReference.cache
+c:\users\owlwang\documents\visual studio 2013\Projects\DataAnalyzer\DataAnalyzer\obj\Debug\DataAnalyzer.Properties.Resources.resources
+c:\users\owlwang\documents\visual studio 2013\Projects\DataAnalyzer\DataAnalyzer\obj\Debug\DataAnalyzer.csproj.GenerateResource.Cache
+c:\users\owlwang\documents\visual studio 2013\Projects\DataAnalyzer\DataAnalyzer\obj\Debug\DataAnalyzer.exe
+c:\users\owlwang\documents\visual studio 2013\Projects\DataAnalyzer\DataAnalyzer\obj\Debug\DataAnalyzer.pdb
+c:\users\owlwang\documents\visual studio 2013\Projects\DataAnalyzer\DataAnalyzer\obj\Debug\DataAnalyzer.DataAnalyzerForm.resources
