@@ -21,7 +21,7 @@ namespace ExportExcelTools
         public int id { get; set; }
         public string title { get; set; }
         public string time { get; set; }
-        public int color { get; set; }
+        public UInt32 color { get; set; }
     }
     public class ExportExcel
     {
@@ -65,6 +65,7 @@ namespace ExportExcelTools
 
             // The name for the worksheet
             workSheet.Name = allSheets[whichSheet].title + allSheets[whichSheet].time;
+            workSheet.Tab.Color = allSheets[whichSheet].color;
 
 
 

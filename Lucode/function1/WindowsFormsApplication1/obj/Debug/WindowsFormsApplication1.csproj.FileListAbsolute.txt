@@ -12,3 +12,13 @@ C:\Users\owlwang\Desktop\B&C\Lucode\function1\WindowsFormsApplication1\bin\Debug
 C:\Users\owlwang\Desktop\B&C\Lucode\function1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csproj.ResolveComReference.cache
 C:\Users\owlwang\Desktop\B&C\Lucode\function1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
 C:\Users\owlwang\Desktop\B&C\Lucode\function1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
+\\vmware-host\Shared Folders\Desktop\csv_convertor\Lucode\function1\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe.config
+\\vmware-host\Shared Folders\Desktop\csv_convertor\Lucode\function1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csproj.ResolveComReference.cache
+\\vmware-host\Shared Folders\Desktop\csv_convertor\Lucode\function1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
+\\vmware-host\Shared Folders\Desktop\csv_convertor\Lucode\function1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
+\\vmware-host\Shared Folders\Desktop\csv_convertor\Lucode\function1\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
+\\vmware-host\Shared Folders\Desktop\csv_convertor\Lucode\function1\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
+\\vmware-host\Shared Folders\Desktop\csv_convertor\Lucode\function1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csprojResolveAssemblyReference.cache
+\\vmware-host\Shared Folders\Desktop\csv_convertor\Lucode\function1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
+\\vmware-host\Shared Folders\Desktop\csv_convertor\Lucode\function1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
+\\vmware-host\Shared Folders\Desktop\csv_convertor\Lucode\function1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csproj.GenerateResource.Cache

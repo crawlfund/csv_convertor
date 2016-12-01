@@ -16,3 +16,6 @@ C:\Users\owlwang\Desktop\B&C\BC_DataAnalyzer\DataAnalyzer\DataAnalyzer\obj\Debug
 C:\Users\owlwang\Desktop\B&C\BC_DataAnalyzer\DataAnalyzer\DataAnalyzer\obj\Debug\DataAnalyzer.DataAnalyzerForm.resources
 C:\Users\owlwang\Desktop\B&C\BC_DataAnalyzer\DataAnalyzer\DataAnalyzer\obj\Debug\DataAnalyzer.Properties.Resources.resources
 C:\Users\owlwang\Desktop\B&C\BC_DataAnalyzer\DataAnalyzer\DataAnalyzer\obj\Debug\DataAnalyzer.csproj.GenerateResource.Cache
+\\vmware-host\Shared Folders\Desktop\csv_convertor\BC_DataAnalyzer\DataAnalyzer\DataAnalyzer\bin\Debug\DataAnalyzer.exe.config
+\\vmware-host\Shared Folders\Desktop\csv_convertor\BC_DataAnalyzer\DataAnalyzer\DataAnalyzer\obj\Debug\DataAnalyzer.exe
+\\vmware-host\Shared Folders\Desktop\csv_convertor\BC_DataAnalyzer\DataAnalyzer\DataAnalyzer\obj\Debug\DataAnalyzer.pdb

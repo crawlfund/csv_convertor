@@ -27,30 +27,31 @@ namespace WindowsFormsApplication1
                     id=1,
                     title="VODACOM RTCE du ",
                     time="13 SEPT 016",
-                    color=(int)Excel.XlRgbColor.rgbSkyBlue,
+                    color=(UInt32)0xC07000,
 
                 }, 
                 new DefSheet{
                     id=2,
                     title="ORANGE RTCE du ",
                     time="13 SEPT 016",
-                    color=(int)Excel.XlRgbColor.rgbOrange,
+                    color=(UInt32)0x317DED,
 
                 },
                 new DefSheet{
                     id=3,
                     title="AIRTEL RTCE du ",
                     time="13 SEPT 016",
-                    color=(int)Excel.XlRgbColor.rgbRed,
+                    color=(UInt32)0x0000FF,
                 },
                 new DefSheet{
                     id=4,
                     title="Mputu RTCE du ",
                     time="13 SEPT 016",
-                    color=(int)Excel.XlRgbColor.rgbPurple,
+                    color=(UInt32)0xA03070,
 
                 }
             };
+            var acc = new List<DataItems>[20];
             var acrcloudItems = new List<DataItems>{
                 new DataItems {
                     time=20,
@@ -87,9 +88,8 @@ namespace WindowsFormsApplication1
             //Fill the content into 4 different sheets
             for (int whichSheet = 0; whichSheet < 4; whichSheet++)
                 ExportExcel.exportContent(acrcloudItems, allSheets, whichSheet);
-
             //Save the excel to a fixed path
-            ExportExcel.saveExcel("\\\\vmware-host\\Shared Folders\\Desktop\\csharp.xls");
+            //ExportExcel.saveExcel("\\\\vmware-host\\Shared Folders\\Desktop\\csharp.xls");
 
         }
     }
