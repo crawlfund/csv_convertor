@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Office.Interop.Excel;
-
+using CsvHelper;
 namespace DataAnalyzer
 {
     public partial class DataAnalyzerForm : Form
@@ -20,7 +20,7 @@ namespace DataAnalyzer
             InitializeComponent();
         }
 
-        private void ImportButton_Click(object sender, EventArgs e)
+        private void importButton_Click(object sender, EventArgs e)
         {
             string filelist = "";
             OpenFileDialog fileDialog = new OpenFileDialog();
@@ -38,24 +38,31 @@ namespace DataAnalyzer
             }
         }
 
-        private void ClearFilesButton_Click(object sender, EventArgs e)
+        private void clearFilesButton_Click(object sender, EventArgs e)
         {
             filesListBox.Items.Clear();
         }
 
-        private void ExportButton_Click(object sender, EventArgs e)
+        private void exportButton_Click(object sender, EventArgs e)
         {
             if (dateTextBox.Text != "" && filesListBox.Items.Count != 0)
             {
                 foreach (string file in filesListBox.Items)
                 {
-                    Console.WriteLine("Hello World");
+                    readFile(file);
                 }
             }
             else
             {
                 MessageBox.Show("Please input date and choose csv files you want to analyze");
             }
+        }
+
+        private void readFile(String filePath)
+        {
+            Console.WriteLine(filePath);
+            System.Data.DataTable dtTable = CsvHelper.CsvHelper.CsvParsingHelper.CsvToDataTable(filePath,true);
+            Console.WriteLine(dtTable);
         }
        
 

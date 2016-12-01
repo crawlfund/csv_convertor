@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CsvHelper.cs" />
+    <Compile Include="CsvStreamReader.cs" />
     <Compile Include="Data_Analyzer.cs">
       <SubType>Form</SubType>
     </Compile>

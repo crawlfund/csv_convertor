@@ -56,7 +56,7 @@
             this.importButton.TabIndex = 6;
             this.importButton.Text = "Import Files";
             this.importButton.UseVisualStyleBackColor = true;
-            this.importButton.Click += new System.EventHandler(this.ImportButton_Click);
+            this.importButton.Click += new System.EventHandler(this.importButton_Click);
             // 
             // exportButton
             // 
@@ -66,7 +66,7 @@
             this.exportButton.TabIndex = 7;
             this.exportButton.Text = "Analyze and  Export";
             this.exportButton.UseVisualStyleBackColor = true;
-            this.exportButton.Click += new System.EventHandler(this.ExportButton_Click);
+            this.exportButton.Click += new System.EventHandler(this.exportButton_Click);
             // 
             // pictureBox1
             // 
@@ -86,7 +86,7 @@
             this.clearFilesButton.TabIndex = 9;
             this.clearFilesButton.Text = "Clear Files";
             this.clearFilesButton.UseVisualStyleBackColor = true;
-            this.clearFilesButton.Click += new System.EventHandler(this.ClearFilesButton_Click);
+            this.clearFilesButton.Click += new System.EventHandler(this.clearFilesButton_Click);
             // 
             // dateTextBox
             // 

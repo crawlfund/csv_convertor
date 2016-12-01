@@ -7,9 +7,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace DataAnalyzer
+namespace CsvHelper
 {
-    class CsvHelper
+    public class CsvHelper
     {
         public class CsvParsingHelper
         {
@@ -66,6 +66,7 @@ namespace DataAnalyzer
                             {
                                 if (csvRows[i] != null)
                                 {
+                                    Console.WriteLine(csvRows[i]);
                                     csvColumns = FromCsvLine(csvRows[i]);
                                     //检查列数是否足够,不足则补充
                                     if (dt.Columns.Count < csvColumns.Length)
