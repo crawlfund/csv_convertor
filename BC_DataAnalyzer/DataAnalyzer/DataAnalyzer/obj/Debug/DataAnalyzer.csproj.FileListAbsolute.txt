@@ -19,3 +19,10 @@ C:\Users\owlwang\Desktop\B&C\BC_DataAnalyzer\DataAnalyzer\DataAnalyzer\obj\Debug
 \\vmware-host\Shared Folders\Desktop\csv_convertor\BC_DataAnalyzer\DataAnalyzer\DataAnalyzer\bin\Debug\DataAnalyzer.exe.config
 \\vmware-host\Shared Folders\Desktop\csv_convertor\BC_DataAnalyzer\DataAnalyzer\DataAnalyzer\obj\Debug\DataAnalyzer.exe
 \\vmware-host\Shared Folders\Desktop\csv_convertor\BC_DataAnalyzer\DataAnalyzer\DataAnalyzer\obj\Debug\DataAnalyzer.pdb
+\\vmware-host\Shared Folders\Desktop\csv_convertor\BC_DataAnalyzer\DataAnalyzer\DataAnalyzer\bin\Debug\DataAnalyzer.exe
+\\vmware-host\Shared Folders\Desktop\csv_convertor\BC_DataAnalyzer\DataAnalyzer\DataAnalyzer\bin\Debug\DataAnalyzer.pdb
+\\vmware-host\Shared Folders\Desktop\csv_convertor\BC_DataAnalyzer\DataAnalyzer\DataAnalyzer\obj\Debug\DataAnalyzer.csprojResolveAssemblyReference.cache
+\\vmware-host\Shared Folders\Desktop\csv_convertor\BC_DataAnalyzer\DataAnalyzer\DataAnalyzer\obj\Debug\DataAnalyzer.csproj.ResolveComReference.cache
+\\vmware-host\Shared Folders\Desktop\csv_convertor\BC_DataAnalyzer\DataAnalyzer\DataAnalyzer\obj\Debug\DataAnalyzer.DataAnalyzerForm.resources
+\\vmware-host\Shared Folders\Desktop\csv_convertor\BC_DataAnalyzer\DataAnalyzer\DataAnalyzer\obj\Debug\DataAnalyzer.Properties.Resources.resources
+\\vmware-host\Shared Folders\Desktop\csv_convertor\BC_DataAnalyzer\DataAnalyzer\DataAnalyzer\obj\Debug\DataAnalyzer.csproj.GenerateResource.Cache

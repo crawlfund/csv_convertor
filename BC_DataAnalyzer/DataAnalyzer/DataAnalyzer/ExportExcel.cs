@@ -18,9 +18,7 @@ namespace ExportExcelTools
     }
     public class DefSheet
     {
-        public int id { get; set; }
         public string title { get; set; }
-        public string time { get; set; }
         public UInt32 color { get; set; }
     }
     public class ExportExcel
@@ -28,9 +26,10 @@ namespace ExportExcelTools
         static private Excel.Application excelApp;
         static private Excel.Workbook workBook;
         static private object misValue;
-
+  
         static public void creatExcel()
         {
+
             misValue = System.Reflection.Missing.Value;
             excelApp = new Excel.Application();
             if (excelApp == null)
@@ -47,7 +46,7 @@ namespace ExportExcelTools
             // Add has an optional parameter for specifying a praticular template. 
             // Because no argument is sent in this example, Add creates a new workbook. 
             workBook = excelApp.Workbooks.Add();
-
+            
             //The default number of sheets is three so we need to add another one
             workBook.Worksheets.Add();
         }
@@ -55,16 +54,38 @@ namespace ExportExcelTools
         {
             workBook.SaveAs(filePath, AccessMode: Excel.XlSaveAsAccessMode.xlShared);
             //workBook.SaveAs("c:\\csharp-Excel.xls", Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-            workBook.Close(true, misValue, misValue);
+            workBook.Close(true,misValue,misValue);
             excelApp.Quit();
         }
-        static public void exportContent(IEnumerable<DataItems> dataItems, List<DefSheet> allSheets, int whichSheet)
+        static public void exportContent(System.Data.DataTable dataItems, int whichSheet,string date)
         {
+            //all Sheets contain 4 sheets and their details
+            var allSheets = new List<DefSheet>{
+                new DefSheet{
+                    title="VODACOM RTCE du ",
+                    color=(UInt32)0xC07000,
+
+                }, 
+                new DefSheet{
+                    title="ORANGE RTCE du ",
+                    color=(UInt32)0x317DED,
+
+                },
+                new DefSheet{
+                    title="AIRTEL RTCE du ",
+                    color=(UInt32)0x0000FF,
+                },
+                new DefSheet{
+                    title="AFRICELL RTCE du ",
+                    color=(UInt32)0xA03070,
+
+                }
+            };
             // Choose to the second workSheet, which is the blue one
-            Excel._Worksheet workSheet = workBook.Worksheets.get_Item(allSheets[whichSheet].id);
+            Excel._Worksheet workSheet = workBook.Worksheets.get_Item(whichSheet+1);
 
             // The name for the worksheet
-            workSheet.Name = allSheets[whichSheet].title + allSheets[whichSheet].time;
+            workSheet.Name = allSheets[whichSheet].title + date;
             workSheet.Tab.Color = allSheets[whichSheet].color;
 
 
@@ -77,23 +98,23 @@ namespace ExportExcelTools
             workSheet.Cells[1, "E"] = "Type1";
             workSheet.Cells[1, "F"] = "Type2";
             workSheet.Cells[1, "G"] = "Execution";
-
+          
             // Call to fill the color for the chart's title
             workSheet.Range["A1", "G1"].Interior.Color = allSheets[whichSheet].color;
             workSheet.Range["A1", "G1"].Font.Color = Excel.XlRgbColor.rgbWhite;
 
 
             var row = 1;
-            foreach (var item in dataItems)
+            foreach (System.Data.DataRow item in dataItems.Rows)
             {
                 row++;
-                workSheet.Cells[row, "A"] = item.time;
-                workSheet.Cells[row, "B"] = item.title;
-                workSheet.Cells[row, "C"] = item.audio_id;
-                workSheet.Cells[row, "D"] = item.duration;
-                workSheet.Cells[row, "E"] = item.type1;
-                workSheet.Cells[row, "F"] = item.type2;
-                workSheet.Cells[row, "G"] = item.execution;
+                workSheet.Cells[row, "A"] = item["Time"];
+                workSheet.Cells[row, "B"] = item["title"];
+                workSheet.Cells[row, "C"] = item["audio_id"];
+                workSheet.Cells[row, "D"] = item["duration"];
+                workSheet.Cells[row, "E"] = item["TYPE1"];
+                workSheet.Cells[row, "F"] = item["TYPE2"];
+                workSheet.Cells[row, "G"] = item["EXECUTION"];
             }
             //I don't know this ...too lazy to search.
             workSheet.Columns[1].AutoFit();
@@ -103,7 +124,7 @@ namespace ExportExcelTools
 
             workSheet.Cells[7, "J"] = "Quantitative daily report ";
             workSheet.Cells[8, "L"] = "Broadcasted 	 ";
-            workSheet.Cells[8, "N"] = "Ordered";
+            workSheet.Cells[8, "N"]="Ordered";
             workSheet.Cells[9, "J"] = "Commercials ";
             workSheet.Cells[9, "K"] = "Duration ";
             workSheet.Cells[9, "L"] = "Qty";
@@ -129,11 +150,11 @@ namespace ExportExcelTools
             workSheet.Range["K13", "P13"].Font.Color = Excel.XlRgbColor.rgbWhite;
 
             int lastRowNumber = workSheet.UsedRange.Rows.Count;
+            
 
 
 
-
-
+        
         }
 
     }
