@@ -24,11 +24,19 @@ namespace CsvHelper
                 DataTable dtResult = null;
                 if (File.Exists(csvfilePath))
                 {
-                    string csvstr = File.ReadAllText(csvfilePath, Encoding.Default);
-                    if (!string.IsNullOrEmpty(csvstr))
+                    try
                     {
-                        dtResult = ToDataTable(csvstr, firstIsRowHead);
+                        string csvstr = File.ReadAllText(csvfilePath, Encoding.Default);
+                        if (!string.IsNullOrEmpty(csvstr))
+                        {
+                            dtResult = ToDataTable(csvstr, firstIsRowHead);
+                        }
                     }
+                    catch(Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                    }
+
                 }
                 return dtResult;
             }
