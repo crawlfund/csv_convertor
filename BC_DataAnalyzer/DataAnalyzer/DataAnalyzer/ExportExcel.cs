@@ -39,7 +39,7 @@ namespace ExportExcelTools
             }
             excelApp.DisplayAlerts = false;
             // Make the object visible.
-            excelApp.Visible = true;
+            excelApp.Visible = false;
 
             // Create a new, empty workbook and add it to the collection returned 
             // by property Workbooks. The new workbook becomes the active workbook.
