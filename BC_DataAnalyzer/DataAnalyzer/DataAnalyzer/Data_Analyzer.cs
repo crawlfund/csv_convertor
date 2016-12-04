@@ -64,15 +64,24 @@ namespace DataAnalyzer
         }
         private void parseDatatable(System.Data.DataTable sourceDt, System.Data.DataTable storageDt, String condition)
         {
-            DataRow[] rows = sourceDt.Select(condition);
-            foreach (DataRow row in rows)
+            try
             {
-                storageDt.Rows.Add(row.ItemArray);
+                DataRow[] rows = sourceDt.Select(condition);
+                foreach (DataRow row in rows)
+                {
+                    storageDt.Rows.Add(row.ItemArray);
+                }
+                DataView dv = storageDt.DefaultView;
+                dv.Sort = "title";
+                dv.ToTable();
             }
-            DataView dv = storageDt.DefaultView;
-            dv.Sort = "title";
-            dv.ToTable();
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR: " + ex);
+                
+            }
         }
+
 
         private void analyzeFile(String filePath)
         {
@@ -114,11 +123,24 @@ namespace DataAnalyzer
                 ExportExcel.exportContent(AIRTELTable, 2, date);
                 ExportExcel.exportContent(AFRICELLTable, 3, date);
                 ExportExcel.exportContent(MARSAVCOTable, 4, date);
-            
-                //Save the excel to a fixed path
-                //ExportExcel.saveExcel("\\\\vmware-host\\Shared Folders\\Desktop\\csharp.xls");
 
-        
+
+                FolderBrowserDialog FBDialog = new FolderBrowserDialog();
+                if (FBDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string path = FBDialog.SelectedPath;
+                    string P_obj_excelName = "";
+                    if (path.EndsWith("\\"))
+                        P_obj_excelName = path + DateTime.Now.ToString("yyyyMMddhhmmss") + ".xls";
+                    else
+                        P_obj_excelName = path + "\\" + DateTime.Now.ToString("yyyyMMddhhmmss") + ".xls";
+                    MessageBox.Show(P_obj_excelName);
+                    //Save the excel to a fixed path
+                    ExportExcel.saveExcel(P_obj_excelName);
+                }
+
+
+
 
 
             }
@@ -128,5 +150,6 @@ namespace DataAnalyzer
             }
 
         }
+
     }
 }
