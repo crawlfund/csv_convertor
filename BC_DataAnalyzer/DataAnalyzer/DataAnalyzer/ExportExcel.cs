@@ -49,6 +49,7 @@ namespace ExportExcelTools
             
             //The default number of sheets is three so we need to add another one
             workBook.Worksheets.Add();
+            workBook.Worksheets.Add();
         }
         static public void saveExcel(string filePath)
         {
@@ -79,6 +80,11 @@ namespace ExportExcelTools
                     title="AFRICELL RTCE du ",
                     color=(UInt32)0xA03070,
 
+                },
+                new DefSheet{
+                    title="MARSAVCO RTCE du ",
+                    color=(UInt32)0x3BA707,
+
                 }
             };
             // Choose to the second workSheet, which is the blue one
@@ -102,6 +108,8 @@ namespace ExportExcelTools
             // Call to fill the color for the chart's title
             workSheet.Range["A1", "G1"].Interior.Color = allSheets[whichSheet].color;
             workSheet.Range["A1", "G1"].Font.Color = Excel.XlRgbColor.rgbWhite;
+
+
 
 
             var row = 1;
@@ -149,10 +157,11 @@ namespace ExportExcelTools
             workSheet.Range["K13", "P13"].Interior.Color = allSheets[whichSheet].color;
             workSheet.Range["K13", "P13"].Font.Color = Excel.XlRgbColor.rgbWhite;
 
+            workSheet.UsedRange.Font.Name = "dengxian";//设置字体
+            workSheet.UsedRange.Font.Size = 11;//设置字体大小
+            workSheet.Columns.AutoFit();//单元格高度宽度自动
+
             int lastRowNumber = workSheet.UsedRange.Rows.Count;
-            
-
-
 
         
         }

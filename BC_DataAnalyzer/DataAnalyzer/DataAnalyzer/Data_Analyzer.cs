@@ -50,7 +50,7 @@ namespace DataAnalyzer
             {
                 foreach (string file in filesListBox.Items)
                 {
-                    readFile(file);
+                    analyzeFile(file);
                 }
             }
             else
@@ -74,7 +74,7 @@ namespace DataAnalyzer
             dv.ToTable();
         }
 
-        private void readFile(String filePath)
+        private void analyzeFile(String filePath)
         {
             Console.WriteLine(filePath);
             System.Data.DataTable dtTable = CsvHelper.CsvHelper.CsvParsingHelper.CsvToDataTable(filePath, true);
@@ -101,17 +101,19 @@ namespace DataAnalyzer
                 String ORANGECondition = "audio_id = 'ORANGE'";
                 parseDatatable(dtTable, ORANGETable, ORANGECondition);
 
-                dataGridView1.DataSource = ORANGETable;
-
+                System.Data.DataTable MARSAVCOTable = dtTable.Clone();
+                String MARSAVCOCondition = "audio_id = 'MARSAVCO'";
+                parseDatatable(dtTable, MARSAVCOTable, MARSAVCOCondition);
   
                 //Creat an Excel including 1 workbook and 4 sheets
                 ExportExcel.creatExcel();
-                string date = "13 SEPT 016";
+                string date = dateTextBox.Text;
                 //Fill the content into 4 different sheets
                 ExportExcel.exportContent(VODACOMTable, 0, date);
                 ExportExcel.exportContent(ORANGETable, 1, date);
                 ExportExcel.exportContent(AIRTELTable, 2, date);
                 ExportExcel.exportContent(AFRICELLTable, 3, date);
+                ExportExcel.exportContent(MARSAVCOTable, 4, date);
             
                 //Save the excel to a fixed path
                 //ExportExcel.saveExcel("\\\\vmware-host\\Shared Folders\\Desktop\\csharp.xls");

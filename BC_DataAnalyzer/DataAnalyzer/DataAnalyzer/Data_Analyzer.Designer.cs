@@ -36,9 +36,7 @@
             this.clearFilesButton = new System.Windows.Forms.Button();
             this.dateTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // filesListBox
@@ -106,21 +104,11 @@
             this.label1.TabIndex = 11;
             this.label1.Text = "Date:";
             // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(536, 12);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(358, 316);
-            this.dataGridView1.TabIndex = 12;
-            // 
             // DataAnalyzerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(906, 429);
-            this.Controls.Add(this.dataGridView1);
+            this.ClientSize = new System.Drawing.Size(546, 343);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dateTextBox);
             this.Controls.Add(this.clearFilesButton);
@@ -131,7 +119,6 @@
             this.Name = "DataAnalyzerForm";
             this.Text = "Data Analyzer";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -146,7 +133,6 @@
         private System.Windows.Forms.Button clearFilesButton;
         private System.Windows.Forms.TextBox dateTextBox;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.DataGridView dataGridView1;
     }
 }
 
