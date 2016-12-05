@@ -67,6 +67,7 @@ namespace DataAnalyzer
             try
             {
                 DataRow[] rows = sourceDt.Select(condition);
+
                 foreach (DataRow row in rows)
                 {
                     storageDt.Rows.Add(row.ItemArray);
@@ -85,44 +86,56 @@ namespace DataAnalyzer
 
         private void analyzeFile(String filePath)
         {
-            Console.WriteLine(filePath);
             System.Data.DataTable dtTable = CsvHelper.CsvHelper.CsvParsingHelper.CsvToDataTable(filePath, true);
             if (dtTable == null)
             {
                 MessageBox.Show("Please make sure the csv files isn't occupied by other programs and the files have data");
             }
             else if (!dt.Columns.Contains("title"))
-            {
+            { 
+
+
                 System.Data.DataTable VODACOMTable = dtTable.Clone();
                 String VODACOMCondition = "audio_id = 'VODACOM'";
                 parseDatatable(dtTable, VODACOMTable, VODACOMCondition);
+                String[] VODACOMTitles = VODACOMTable.AsEnumerable().Select(c => (String)c["title"]).Distinct().ToArray();
+
+
        
 
                 System.Data.DataTable AIRTELTable = dtTable.Clone();
                 String AIRTELCondition = "audio_id = 'AIRTEL'";
                 parseDatatable(dtTable, AIRTELTable, AIRTELCondition);
+                String[] AIRTELTitles = AIRTELTable.AsEnumerable().Select(c => (String)c["title"]).Distinct().ToArray();
+
 
                 System.Data.DataTable AFRICELLTable = dtTable.Clone();
                 String AFRICELLCondition = "audio_id = 'AFRICELL'";
                 parseDatatable(dtTable, AFRICELLTable, AFRICELLCondition);
+                String[] AFRICELLTitles = AFRICELLTable.AsEnumerable().Select(c => (String)c["title"]).Distinct().ToArray();
+
 
                 System.Data.DataTable ORANGETable = dtTable.Clone();
                 String ORANGECondition = "audio_id = 'ORANGE'";
                 parseDatatable(dtTable, ORANGETable, ORANGECondition);
+                String[] ORANGETitles = ORANGETable.AsEnumerable().Select(c => (String)c["title"]).Distinct().ToArray();
+
 
                 System.Data.DataTable MARSAVCOTable = dtTable.Clone();
                 String MARSAVCOCondition = "audio_id = 'MARSAVCO'";
                 parseDatatable(dtTable, MARSAVCOTable, MARSAVCOCondition);
+                String[] MARSAVCOTitles = MARSAVCOTable.AsEnumerable().Select(c => (String)c["title"]).Distinct().ToArray();
+
   
                 //Creat an Excel including 1 workbook and 4 sheets
                 ExportExcel.creatExcel();
                 string date = dateTextBox.Text;
                 //Fill the content into 4 different sheets
-                ExportExcel.exportContent(VODACOMTable, 0, date);
-                ExportExcel.exportContent(ORANGETable, 1, date);
-                ExportExcel.exportContent(AIRTELTable, 2, date);
-                ExportExcel.exportContent(AFRICELLTable, 3, date);
-                ExportExcel.exportContent(MARSAVCOTable, 4, date);
+                ExportExcel.exportContent(VODACOMTable, 0, date, VODACOMTitles);
+                ExportExcel.exportContent(ORANGETable, 1, date, ORANGETitles);
+                ExportExcel.exportContent(AIRTELTable, 2, date, AIRTELTitles);
+                ExportExcel.exportContent(AFRICELLTable, 3, date, AFRICELLTitles);
+                ExportExcel.exportContent(MARSAVCOTable, 4, date, MARSAVCOTitles);
 
 
                 FolderBrowserDialog FBDialog = new FolderBrowserDialog();
@@ -131,17 +144,13 @@ namespace DataAnalyzer
                     string path = FBDialog.SelectedPath;
                     string P_obj_excelName = "";
                     if (path.EndsWith("\\"))
-                        P_obj_excelName = path + DateTime.Now.ToString("yyyyMMddhhmmss") + ".xls";
+                        P_obj_excelName = path + date + "_report_" + DateTime.Now.ToString("yyyyMMddhhmmss") + ".xls";
                     else
-                        P_obj_excelName = path + "\\" + DateTime.Now.ToString("yyyyMMddhhmmss") + ".xls";
+                        P_obj_excelName = path + "\\" + date + "_report_" + DateTime.Now.ToString("yyyyMMddhhmmss") + ".xls";
                     MessageBox.Show(P_obj_excelName);
                     //Save the excel to a fixed path
                     ExportExcel.saveExcel(P_obj_excelName);
                 }
-
-
-
-
 
             }
             else

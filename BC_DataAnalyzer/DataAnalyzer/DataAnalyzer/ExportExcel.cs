@@ -39,7 +39,7 @@ namespace ExportExcelTools
             }
             excelApp.DisplayAlerts = false;
             // Make the object visible.
-            excelApp.Visible = false;
+            excelApp.Visible = true;
 
             // Create a new, empty workbook and add it to the collection returned 
             // by property Workbooks. The new workbook becomes the active workbook.
@@ -58,7 +58,7 @@ namespace ExportExcelTools
             workBook.Close(true,misValue,misValue);
             excelApp.Quit();
         }
-        static public void exportContent(System.Data.DataTable dataItems, int whichSheet,string date)
+        static public void exportContent(System.Data.DataTable dataItems, int whichSheet,string date, String[] sheetTitles)
         {
             //all Sheets contain 4 sheets and their details
             var allSheets = new List<DefSheet>{
@@ -124,26 +124,38 @@ namespace ExportExcelTools
                 workSheet.Cells[row, "F"] = item["TYPE2"];
                 workSheet.Cells[row, "G"] = item["EXECUTION"];
             }
-            //I don't know this ...too lazy to search.
-            workSheet.Columns[1].AutoFit();
-            workSheet.Columns[2].AutoFit();
+
 
             //Add the summary
 
-            workSheet.Cells[7, "J"] = "Quantitative daily report ";
-            workSheet.Cells[8, "L"] = "Broadcasted 	 ";
+            workSheet.Cells[7, "J"] = "Quantitative daily report";
+            workSheet.Cells[8, "L"] = "Broadcasted";
             workSheet.Cells[8, "N"]="Ordered";
-            workSheet.Cells[9, "J"] = "Commercials ";
-            workSheet.Cells[9, "K"] = "Duration ";
+            workSheet.Cells[9, "J"] = "Commercials";
+            workSheet.Cells[9, "K"] = "Duration";
             workSheet.Cells[9, "L"] = "Qty";
             workSheet.Cells[9, "M"] = "Time spent";
             workSheet.Cells[9, "N"] = "";
             workSheet.Cells[9, "O"] = "Variation";
-            workSheet.Cells[9, "P"] = "Execution rate ";
-            workSheet.Cells[10, "J"] = "Forfait Int  Pay / Mass / M-MONEY / Spot";
-            workSheet.Cells[11, "J"] = "Mputu  JS8 / Spot";
-            workSheet.Cells[12, "J"] = "Tarif 3G / YOUTH / SAV / Spot";
-            workSheet.Cells[13, "J"] = "Total";
+            workSheet.Cells[9, "P"] = "Execution rate";
+
+
+            int i = 10;
+
+            foreach(String title in sheetTitles)
+            {
+                workSheet.Cells[i, "J"] = title;
+                workSheet.Range["J" + i.ToString()].Interior.Color = allSheets[whichSheet].color;
+                workSheet.Range["J" + i.ToString()].Font.Color = Excel.XlRgbColor.rgbWhite;
+
+
+                workSheet.Cells[i, "O"] = "=N" + i.ToString() + "-" + "L" + i.ToString();
+                workSheet.Cells[i, "P"] = "=L" + i.ToString() + "/" + "N" + i.ToString();
+                i++;
+            }
+            workSheet.Cells[i, "J"] = "Total";
+            workSheet.Range["J" + i.ToString(), "P" + i.ToString()].Interior.Color = allSheets[whichSheet].color;
+            workSheet.Range["J" + i.ToString(),"P"+i.ToString()].Font.Color = Excel.XlRgbColor.rgbWhite;
 
             // Call to fill the color for the chart's title
             workSheet.Range["J7"].Interior.Color = allSheets[whichSheet].color;
@@ -152,10 +164,7 @@ namespace ExportExcelTools
             workSheet.Range["L8", "N8"].Font.Color = Excel.XlRgbColor.rgbWhite;
             workSheet.Range["J9", "P9"].Interior.Color = allSheets[whichSheet].color;
             workSheet.Range["J9", "P9"].Font.Color = Excel.XlRgbColor.rgbWhite;
-            workSheet.Range["J10", "J13"].Interior.Color = allSheets[whichSheet].color;
-            workSheet.Range["J10", "J13"].Font.Color = Excel.XlRgbColor.rgbWhite;
-            workSheet.Range["K13", "P13"].Interior.Color = allSheets[whichSheet].color;
-            workSheet.Range["K13", "P13"].Font.Color = Excel.XlRgbColor.rgbWhite;
+
 
             workSheet.UsedRange.Font.Name = "dengxian";//设置字体
             workSheet.UsedRange.Font.Size = 11;//设置字体大小
