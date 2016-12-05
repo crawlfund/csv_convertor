@@ -112,7 +112,44 @@ namespace ExportExcelTools
 
 
 
+            for (int i = 0; i < dataItems.Rows.Count; i++)
+            {
+                string title = dataItems.Rows[i]["title"].ToString();
 
+                string timeStr = dataItems.Rows[i]["Time"].ToString();
+                double timeSeconds = TimeSpan.Parse(timeStr).TotalSeconds;//time的秒数
+
+                string durationStr = dataItems.Rows[i]["duration"].ToString();
+                double durationSeconds = TimeSpan.Parse(durationStr).TotalSeconds;//duration的秒数
+
+                double adEndTime = timeSeconds + durationSeconds;//广告结束时间
+
+                for (int j = i + 1; j < dataItems.Rows.Count;)
+                {
+                    string nowTimeStr = dataItems.Rows[j]["Time"].ToString();
+                    string nowTitle = dataItems.Rows[j]["title"].ToString();
+
+                    double nowtimeSeconds = TimeSpan.Parse(nowTimeStr).TotalSeconds;
+                    if (nowtimeSeconds <= adEndTime+1 && title == nowTitle)
+                    {
+                        dataItems.Rows[j].Delete();
+                        j--;
+                    }
+                    j++;
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+
+              //这个地方是输出报表主体的
             var row = 1;
             foreach (System.Data.DataRow item in dataItems.Rows)
             {
@@ -127,7 +164,8 @@ namespace ExportExcelTools
             }
 
 
-            //Add the summary
+
+             //这个地方是小报表的字段
 
             workSheet.Cells[7, "J"] = "Quantitative daily report";
             workSheet.Cells[8, "L"] = "Broadcasted";
@@ -141,25 +179,27 @@ namespace ExportExcelTools
             workSheet.Cells[9, "P"] = "Execution rate";
 
 
-            int i = 10;
+
+            //这个地方是处理小报表的
+            int a = 10;
 
             foreach(String title in sheetTitles)
             {
-                workSheet.Cells[i, "J"] = title;
+                workSheet.Cells[a, "J"] = title;
                 
                 DataRow[] rowdata = dataItems.Select("title = '"+title+"'");
-                workSheet.Cells[i, "K"] = rowdata[0]["duration"];
+                workSheet.Cells[a, "K"] = rowdata[0]["duration"];
 
-                workSheet.Range["J" + i.ToString()].Interior.Color = allSheets[whichSheet].color;
-                workSheet.Range["J" + i.ToString()].Font.Color = Excel.XlRgbColor.rgbWhite;
+                workSheet.Range["J" + a.ToString()].Interior.Color = allSheets[whichSheet].color;
+                workSheet.Range["J" + a.ToString()].Font.Color = Excel.XlRgbColor.rgbWhite;
 
-                workSheet.Cells[i, "O"] = "=N" + i.ToString() + "-" + "L" + i.ToString();
-                workSheet.Cells[i, "P"] = "=L" + i.ToString() + "/" + "N" + i.ToString();
-                i++;
+                workSheet.Cells[a, "O"] = "=N" + a.ToString() + "-" + "L" + a.ToString();
+                workSheet.Cells[a, "P"] = "=L" + a.ToString() + "/" + "N" + a.ToString();
+                a++;
             }
-            workSheet.Cells[i, "J"] = "Total";
-            workSheet.Range["J" + i.ToString(), "P" + i.ToString()].Interior.Color = allSheets[whichSheet].color;
-            workSheet.Range["J" + i.ToString(),"P"+i.ToString()].Font.Color = Excel.XlRgbColor.rgbWhite;
+            workSheet.Cells[a, "J"] = "Total";
+            workSheet.Range["J" + a.ToString(), "P" + a.ToString()].Interior.Color = allSheets[whichSheet].color;
+            workSheet.Range["J" + a.ToString(),"P"+a.ToString()].Font.Color = Excel.XlRgbColor.rgbWhite;
 
             // Call to fill the color for the chart's title
             workSheet.Range["J7"].Interior.Color = allSheets[whichSheet].color;
@@ -168,6 +208,11 @@ namespace ExportExcelTools
             workSheet.Range["L8", "N8"].Font.Color = Excel.XlRgbColor.rgbWhite;
             workSheet.Range["J9", "P9"].Interior.Color = allSheets[whichSheet].color;
             workSheet.Range["J9", "P9"].Font.Color = Excel.XlRgbColor.rgbWhite;
+
+
+
+
+
 
 
             workSheet.UsedRange.Font.Name = "dengxian";//设置字体
