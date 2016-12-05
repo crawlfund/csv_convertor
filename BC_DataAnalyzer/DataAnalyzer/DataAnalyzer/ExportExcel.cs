@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.Data;
 
 using Excel = Microsoft.Office.Interop.Excel;
 namespace ExportExcelTools
@@ -145,9 +146,12 @@ namespace ExportExcelTools
             foreach(String title in sheetTitles)
             {
                 workSheet.Cells[i, "J"] = title;
+                
+                DataRow[] rowdata = dataItems.Select("title = '"+title+"'");
+                workSheet.Cells[i, "K"] = rowdata[0]["duration"];
+
                 workSheet.Range["J" + i.ToString()].Interior.Color = allSheets[whichSheet].color;
                 workSheet.Range["J" + i.ToString()].Font.Color = Excel.XlRgbColor.rgbWhite;
-
 
                 workSheet.Cells[i, "O"] = "=N" + i.ToString() + "-" + "L" + i.ToString();
                 workSheet.Cells[i, "P"] = "=L" + i.ToString() + "/" + "N" + i.ToString();
