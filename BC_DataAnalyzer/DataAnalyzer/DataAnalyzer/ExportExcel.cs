@@ -193,6 +193,10 @@ namespace ExportExcelTools
                 workSheet.Range["J" + a.ToString()].Interior.Color = allSheets[whichSheet].color;
                 workSheet.Range["J" + a.ToString()].Font.Color = Excel.XlRgbColor.rgbWhite;
 
+                workSheet.Cells[a, "L"] = "=COUNTIF(B:B,J" + a + ")";
+                workSheet.Cells[a, "M"] = "=TEXT((HOUR(K"+ a.ToString()+")*L"+ a.ToString()+"*3600+MINUTE(K"+ a.ToString()+")*L"+ a.ToString()+"*60+SECOND(K"+ a.ToString()+")*L"+ a.ToString()+@")/24/3600,""hh::mm:ss"")";
+
+
                 workSheet.Cells[a, "O"] = "=N" + a.ToString() + "-" + "L" + a.ToString();
                 workSheet.Cells[a, "P"] = "=L" + a.ToString() + "/" + "N" + a.ToString();
                 a++;

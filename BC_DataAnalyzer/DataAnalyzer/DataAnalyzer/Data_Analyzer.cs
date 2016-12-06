@@ -144,9 +144,9 @@ namespace DataAnalyzer
                     string path = FBDialog.SelectedPath;
                     string P_obj_excelName = "";
                     if (path.EndsWith("\\"))
-                        P_obj_excelName = path + date + "_report_" + DateTime.Now.ToString("yyyyMMddhhmmss") + ".xls";
+                        P_obj_excelName = path + date + "_report_" + DateTime.Now.ToString("yyyyMMddhhmmss") + ".xlsx";
                     else
-                        P_obj_excelName = path + "\\" + date + "_report_" + DateTime.Now.ToString("yyyyMMddhhmmss") + ".xls";
+                        P_obj_excelName = path + "\\" + date + "_report_" + DateTime.Now.ToString("yyyyMMddhhmmss") + ".xlsx";
                     MessageBox.Show(P_obj_excelName);
                     //Save the excel to a fixed path
                     ExportExcel.saveExcel(P_obj_excelName);
