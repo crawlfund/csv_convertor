@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
-using System.Runtime.InteropServices;
 using System.Data;
-
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 namespace ExportExcelTools
 {
@@ -27,7 +26,7 @@ namespace ExportExcelTools
         static private Excel.Application excelApp;
         static private Excel.Workbook workBook;
         static private object misValue;
-  
+    
         static public void creatExcel()
         {
 
@@ -51,6 +50,12 @@ namespace ExportExcelTools
             //The default number of sheets is three so we need to add another one
             workBook.Worksheets.Add();
             workBook.Worksheets.Add();
+
+            workBook.Worksheets.Add();
+            workBook.Worksheets.Add();
+            workBook.Worksheets.Add();
+            workBook.Worksheets.Add();
+            workBook.Worksheets.Add();
         }
         static public void saveExcel(string filePath)
         {
@@ -59,7 +64,7 @@ namespace ExportExcelTools
             workBook.Close(true,misValue,misValue);
             excelApp.Quit();
         }
-        static public void exportContent(System.Data.DataTable dataItems, int whichSheet,string date, String[] sheetTitles)
+        static public void exportContent(System.Data.DataTable dataItems, int whichSheet,string date, String[] sheetTitles, String[] sheetChannels)
         {
             //all Sheets contain 4 sheets and their details
             var allSheets = new List<DefSheet>{
@@ -85,15 +90,40 @@ namespace ExportExcelTools
                 new DefSheet{
                     title="MARSAVCO RTCE du ",
                     color=(UInt32)0x3BA707,
+                },
 
-                }
+                //global channels report
+                new DefSheet{
+                    title="GLOBAL DAILY REPORT VODACOM",
+                    color= (UInt32)0xC07000,
+                },
+                new DefSheet{
+                    title="GLOBAL DAILY REPORT ORANGE",
+                    color= (UInt32)0x317DED,
+                },
+                new DefSheet{
+                    title="GLOBAL DAILY REPORT AIRTEL",
+                    color= (UInt32)0x0000FF,
+                },
+                new DefSheet{
+                    title="GLOBAL DAILY REPORT AFRICEL",
+                    color= (UInt32)0xA03070,
+                },
+                new DefSheet{
+                    title="GLOBAL DAILY REPORT MARSAVC",
+                    color= (UInt32)0x3BA707,
+                },
+
             };
-            // Choose to the second workSheet, which is the blue one
             Excel._Worksheet workSheet = workBook.Worksheets.get_Item(whichSheet+1);
-
+            Excel._Worksheet workSheetGlobal = workBook.Worksheets.get_Item(whichSheet + 6);
             // The name for the worksheet
             workSheet.Name = allSheets[whichSheet].title + date;
             workSheet.Tab.Color = allSheets[whichSheet].color;
+
+            workSheetGlobal.Name = allSheets[whichSheet+5].title;
+            workSheetGlobal.Tab.Color = allSheets[whichSheet+5].color;
+
 
 
 
@@ -105,10 +135,11 @@ namespace ExportExcelTools
             workSheet.Cells[1, "E"] = "Type1";
             workSheet.Cells[1, "F"] = "Type2";
             workSheet.Cells[1, "G"] = "Execution";
+            workSheet.Cells[1, "H"] = "ChannelName";
           
             // Call to fill the color for the chart's title
-            workSheet.Range["A1", "G1"].Interior.Color = allSheets[whichSheet].color;
-            workSheet.Range["A1", "G1"].Font.Color = Excel.XlRgbColor.rgbWhite;
+            workSheet.Range["A1", "H1"].Interior.Color = allSheets[whichSheet].color;
+            workSheet.Range["A1", "H1"].Font.Color = Excel.XlRgbColor.rgbWhite;
 
 
 
@@ -123,7 +154,7 @@ namespace ExportExcelTools
                 double durationSeconds = TimeSpan.Parse(durationStr).TotalSeconds;//duration的秒数
 
                 double adEndTime = timeSeconds + durationSeconds;//广告结束时间
-
+                //去除重复广告
                 for (int j = i + 1; j < dataItems.Rows.Count;)
                 {
                     string nowTimeStr = dataItems.Rows[j]["Time"].ToString();
@@ -141,14 +172,6 @@ namespace ExportExcelTools
 
 
 
-
-
-
-
-
-
-
-
               //这个地方是输出报表主体的
             var row = 1;
             foreach (System.Data.DataRow item in dataItems.Rows)
@@ -161,6 +184,8 @@ namespace ExportExcelTools
                 workSheet.Cells[row, "E"] = item["TYPE1"];
                 workSheet.Cells[row, "F"] = item["TYPE2"];
                 workSheet.Cells[row, "G"] = item["EXECUTION"];
+                workSheet.Cells[row, "H"] = item["ChannelName"];
+
             }
 
 
@@ -180,11 +205,12 @@ namespace ExportExcelTools
 
 
 
-            //这个地方是处理小报表的
+            
             int a = 10;
-
+            int b = Asc("B");
             foreach(String title in sheetTitles)
             {
+                //这个地方是处理小报表的格式和内容
                 workSheet.Cells[a, "J"] = title;
                 
                 DataRow[] rowdata = dataItems.Select("title = '"+title+"'");
@@ -200,10 +226,32 @@ namespace ExportExcelTools
                 workSheet.Cells[a, "O"] = "=N" + a.ToString() + "-" + "L" + a.ToString();
                 workSheet.Cells[a, "P"] = "=L" + a.ToString() + "/" + "N" + a.ToString();
                 a++;
+
+                //这个地方是处理总表的表头
+                workSheetGlobal.Cells[4, Chr(b)] = title;
+               
             }
             workSheet.Cells[a, "J"] = "Total";
             workSheet.Range["J" + a.ToString(), "P" + a.ToString()].Interior.Color = allSheets[whichSheet].color;
             workSheet.Range["J" + a.ToString(),"P"+a.ToString()].Font.Color = Excel.XlRgbColor.rgbWhite;
+            workSheetGlobal.Cells[4, Chr(b + 1)] = "Total";
+            workSheetGlobal.Cells[4, Chr(b + 2)] = "Time spent per channel";
+            workSheetGlobal.Cells[4, Chr(b + 3)] = "Average Excution rate per channel";
+            workSheetGlobal.Range[Chr(b + 2) + "4", Chr(b + 3) + "4"].Interior.Color = allSheets[whichSheet].color;
+            workSheetGlobal.Range[Chr(b + 2) + "4", Chr(b + 3) + "4"].Font.Color = Excel.XlRgbColor.rgbWhite;
+
+
+            //创建总表头
+
+            workSheetGlobal.Range["B3", Chr(b+1)+"3"].Interior.Color = allSheets[whichSheet + 5].color;
+            workSheetGlobal.Range["B3", Chr(b+1)+"3"].Font.Color = Excel.XlRgbColor.rgbWhite;
+            workSheetGlobal.Range["B3", Chr(b+1)+"3"].Merge();//合并单元格
+            workSheetGlobal.Cells["3", "B"] = "Broadcasted";
+            workSheetGlobal.Range["B3", Chr(b+1) + "3"].HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+            
+
+
+
 
             // Call to fill the color for the chart's title
             workSheet.Range["J7"].Interior.Color = allSheets[whichSheet].color;
@@ -219,14 +267,74 @@ namespace ExportExcelTools
 
 
 
+
+
+
+            //下面是global报表
+
+
+
+            int c = 1;
+            foreach(String channelName in sheetChannels)
+            {
+                workSheetGlobal.Cells[c+4, "A"] = "Station " + c.ToString() + " = " + channelName;
+                c++;
+            }
+            workSheetGlobal.Cells[c + 5, "A"] = "TOTAL";
+            workSheetGlobal.Range["A" + (c + 5).ToString(), Chr(b + 3).ToString() + (c + 5).ToString()].Interior.Color = allSheets[whichSheet].color;
+            workSheetGlobal.Range["A" + (c + 5).ToString(), Chr(b + 3).ToString() + (c + 5).ToString()].Font.Color = Excel.XlRgbColor.rgbWhite;
+
+
+
+
+
+
+
             workSheet.UsedRange.Font.Name = "dengxian";//设置字体
             workSheet.UsedRange.Font.Size = 11;//设置字体大小
             workSheet.Columns.AutoFit();//单元格高度宽度自动
 
-            int lastRowNumber = workSheet.UsedRange.Rows.Count;
 
+            workSheetGlobal.UsedRange.Font.Name = "dengxian";//设置字体
+            workSheetGlobal.UsedRange.Font.Size = 11;//设置字体大小
+            workSheetGlobal.Columns.AutoFit();//单元格高度宽度自动
+
+            int lastRowNumber = workSheet.UsedRange.Rows.Count;
         
         }
+
+        private static int Asc(string character)
+        {
+            if (character.Length == 1)
+            {
+                System.Text.ASCIIEncoding asciiEncoding = new System.Text.ASCIIEncoding();
+                int intAsciiCode = (int)asciiEncoding.GetBytes(character)[0];
+                return (intAsciiCode);
+            }
+            else
+            {
+                throw new Exception("Character is not valid.");
+            }
+
+        }
+        private static string Chr(int asciiCode)
+        {
+            if (asciiCode >= 0 && asciiCode <= 255)
+            {
+                System.Text.ASCIIEncoding asciiEncoding = new System.Text.ASCIIEncoding();
+                byte[] byteArray = new byte[] { (byte)asciiCode };
+                string strCharacter = asciiEncoding.GetString(byteArray);
+                return (strCharacter);
+            }
+            else
+            {
+                throw new Exception("ASCII Code is not valid.");
+            }
+        }
+
+
+
+
 
     }
 }

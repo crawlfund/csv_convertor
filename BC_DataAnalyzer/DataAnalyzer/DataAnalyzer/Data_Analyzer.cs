@@ -99,7 +99,7 @@ namespace DataAnalyzer
                 String VODACOMCondition = "audio_id = 'VODACOM'";
                 parseDatatable(dtTable, VODACOMTable, VODACOMCondition);
                 String[] VODACOMTitles = VODACOMTable.AsEnumerable().Select(c => (String)c["title"]).Distinct().ToArray();
-
+                String[] VODACOMChannels = VODACOMTable.AsEnumerable().Select(c => (String)c["ChannelName"]).Distinct().ToArray();
 
        
 
@@ -107,36 +107,42 @@ namespace DataAnalyzer
                 String AIRTELCondition = "audio_id = 'AIRTEL'";
                 parseDatatable(dtTable, AIRTELTable, AIRTELCondition);
                 String[] AIRTELTitles = AIRTELTable.AsEnumerable().Select(c => (String)c["title"]).Distinct().ToArray();
+                String[] AIRTELChannels = AIRTELTable.AsEnumerable().Select(c => (String)c["ChannelName"]).Distinct().ToArray();
 
 
                 System.Data.DataTable AFRICELLTable = dtTable.Clone();
                 String AFRICELLCondition = "audio_id = 'AFRICELL'";
                 parseDatatable(dtTable, AFRICELLTable, AFRICELLCondition);
                 String[] AFRICELLTitles = AFRICELLTable.AsEnumerable().Select(c => (String)c["title"]).Distinct().ToArray();
+                String[] AFRICELLChannels = AFRICELLTable.AsEnumerable().Select(c => (String)c["ChannelName"]).Distinct().ToArray();
+
 
 
                 System.Data.DataTable ORANGETable = dtTable.Clone();
                 String ORANGECondition = "audio_id = 'ORANGE'";
                 parseDatatable(dtTable, ORANGETable, ORANGECondition);
                 String[] ORANGETitles = ORANGETable.AsEnumerable().Select(c => (String)c["title"]).Distinct().ToArray();
+                String[] ORANGEChannels = ORANGETable.AsEnumerable().Select(c => (String)c["ChannelName"]).Distinct().ToArray();
+
 
 
                 System.Data.DataTable MARSAVCOTable = dtTable.Clone();
                 String MARSAVCOCondition = "audio_id = 'MARSAVCO'";
                 parseDatatable(dtTable, MARSAVCOTable, MARSAVCOCondition);
                 String[] MARSAVCOTitles = MARSAVCOTable.AsEnumerable().Select(c => (String)c["title"]).Distinct().ToArray();
+                String[] MARSAVCOChannels = MARSAVCOTable.AsEnumerable().Select(c => (String)c["ChannelName"]).Distinct().ToArray();
+
 
   
                 //Creat an Excel including 1 workbook and 4 sheets
                 ExportExcel.creatExcel();
                 string date = dateTextBox.Text;
                 //Fill the content into 4 different sheets
-                ExportExcel.exportContent(VODACOMTable, 0, date, VODACOMTitles);
-                ExportExcel.exportContent(ORANGETable, 1, date, ORANGETitles);
-                ExportExcel.exportContent(AIRTELTable, 2, date, AIRTELTitles);
-                ExportExcel.exportContent(AFRICELLTable, 3, date, AFRICELLTitles);
-                ExportExcel.exportContent(MARSAVCOTable, 4, date, MARSAVCOTitles);
-
+                ExportExcel.exportContent(VODACOMTable, 0, date, VODACOMTitles, VODACOMChannels);
+                ExportExcel.exportContent(ORANGETable, 1, date, ORANGETitles, ORANGEChannels);
+                ExportExcel.exportContent(AIRTELTable, 2, date, AIRTELTitles, AIRTELChannels);
+                ExportExcel.exportContent(AFRICELLTable, 3, date, AFRICELLTitles, AFRICELLChannels);
+                ExportExcel.exportContent(MARSAVCOTable, 4, date, MARSAVCOTitles, MARSAVCOChannels);
 
                 FolderBrowserDialog FBDialog = new FolderBrowserDialog();
                 if (FBDialog.ShowDialog() == DialogResult.OK)
