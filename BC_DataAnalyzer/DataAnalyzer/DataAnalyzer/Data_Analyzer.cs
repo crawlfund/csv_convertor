@@ -15,7 +15,7 @@ namespace DataAnalyzer
 {
     public partial class DataAnalyzerForm : Form
     {
-        System.Data.DataTable dt = new System.Data.DataTable();
+        System.Data.DataTable dtTable = new System.Data.DataTable();
         public DataAnalyzerForm()
         {
             InitializeComponent();
@@ -50,8 +50,9 @@ namespace DataAnalyzer
             {
                 foreach (string file in filesListBox.Items)
                 {
-                    analyzeFile(file);
+                    readFilesTodtTable(file);
                 }
+                analyzeFile(dtTable);
             }
             else
             {
@@ -62,7 +63,7 @@ namespace DataAnalyzer
 
            
         }
-        private void parseDatatable(System.Data.DataTable sourceDt, System.Data.DataTable storageDt, String condition)
+        private void parseDatatable(System.Data.DataTable sourceDt, System.Data.DataTable storageDt,String condition)
         {
             try
             {
@@ -84,14 +85,20 @@ namespace DataAnalyzer
         }
 
 
-        private void analyzeFile(String filePath)
+
+        private void readFilesTodtTable(String filePath)
         {
-            System.Data.DataTable dtTable = CsvHelper.CsvHelper.CsvParsingHelper.CsvToDataTable(filePath, true);
+             System.Data.DataTable newdtTable= CsvHelper.CsvHelper.CsvParsingHelper.CsvToDataTable(filePath, true);
+
+        }
+        private void analyzeFile(System.Data.DataTable dtTable)
+        {
+
             if (dtTable == null)
             {
                 MessageBox.Show("Please make sure the csv files isn't occupied by other programs and the files have data");
             }
-            else if (!dt.Columns.Contains("title"))
+            else if (dtTable.Columns.Contains("title"))
             { 
 
 

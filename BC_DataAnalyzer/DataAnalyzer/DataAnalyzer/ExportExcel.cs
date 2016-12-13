@@ -143,32 +143,33 @@ namespace ExportExcelTools
 
 
 
-            for (int i = 0; i < dataItems.Rows.Count; i++)
-            {
-                string title = dataItems.Rows[i]["title"].ToString();
+            //for (int i = 0; i < dataItems.Rows.Count; i++)
+            //{
+            //    string title = dataItems.Rows[i]["title"].ToString();
 
-                string timeStr = dataItems.Rows[i]["Time"].ToString();
-                double timeSeconds = TimeSpan.Parse(timeStr).TotalSeconds;//time的秒数
+            //    string timeStr = dataItems.Rows[i]["Time"].ToString();
+            //    double timeSeconds = TimeSpan.Parse(timeStr).TotalSeconds;//time的秒数
 
-                string durationStr = dataItems.Rows[i]["duration"].ToString();
-                double durationSeconds = TimeSpan.Parse(durationStr).TotalSeconds;//duration的秒数
+            //    string durationStr = dataItems.Rows[i]["duration"].ToString();
+            //    double durationSeconds = TimeSpan.Parse(durationStr).TotalSeconds;//duration的秒数
 
-                double adEndTime = timeSeconds + durationSeconds;//广告结束时间
-                //去除重复广告
-                for (int j = i + 1; j < dataItems.Rows.Count;)
-                {
-                    string nowTimeStr = dataItems.Rows[j]["Time"].ToString();
-                    string nowTitle = dataItems.Rows[j]["title"].ToString();
-
-                    double nowtimeSeconds = TimeSpan.Parse(nowTimeStr).TotalSeconds;
-                    if (nowtimeSeconds <= adEndTime+1 && title == nowTitle)
-                    {
-                        dataItems.Rows[j].Delete();
-                        j--;
-                    }
-                    j++;
-                }
-            }
+            //    double adEndTime = timeSeconds + durationSeconds;//广告结束时间
+            //    string channelname1 = dataItems.Rows[i]["ChannelName"].ToString();
+            //    //去除重复广告
+            //    for (int j = i + 1; j < dataItems.Rows.Count;)
+            //    {
+            //        string nowTimeStr = dataItems.Rows[j]["Time"].ToString();
+            //        string nowTitle = dataItems.Rows[j]["title"].ToString();
+            //        string channelname2 = dataItems.Rows[j]["ChannelName"].ToString();
+            //        double nowtimeSeconds = TimeSpan.Parse(nowTimeStr).TotalSeconds;
+            //        if (nowtimeSeconds <= adEndTime + 1 && title == nowTitle)
+            //        {
+            //            dataItems.Rows[j].Delete();
+            //            j--;
+            //        }
+            //        j++;
+            //    }
+            //}
 
 
 
@@ -226,19 +227,19 @@ namespace ExportExcelTools
                 workSheet.Cells[a, "O"] = "=N" + a.ToString() + "-" + "L" + a.ToString();
                 workSheet.Cells[a, "P"] = "=L" + a.ToString() + "/" + "N" + a.ToString();
                 a++;
-
                 //这个地方是处理总表的表头
                 workSheetGlobal.Cells[4, Chr(b)] = title;
+                b++;
                
             }
             workSheet.Cells[a, "J"] = "Total";
             workSheet.Range["J" + a.ToString(), "P" + a.ToString()].Interior.Color = allSheets[whichSheet].color;
             workSheet.Range["J" + a.ToString(),"P"+a.ToString()].Font.Color = Excel.XlRgbColor.rgbWhite;
-            workSheetGlobal.Cells[4, Chr(b + 1)] = "Total";
-            workSheetGlobal.Cells[4, Chr(b + 2)] = "Time spent per channel";
-            workSheetGlobal.Cells[4, Chr(b + 3)] = "Average Excution rate per channel";
-            workSheetGlobal.Range[Chr(b + 2) + "4", Chr(b + 3) + "4"].Interior.Color = allSheets[whichSheet].color;
-            workSheetGlobal.Range[Chr(b + 2) + "4", Chr(b + 3) + "4"].Font.Color = Excel.XlRgbColor.rgbWhite;
+            workSheetGlobal.Cells[4, Chr(b)] = "Total";
+            workSheetGlobal.Cells[4, Chr(b + 1)] = "Time spent per channel";
+            workSheetGlobal.Cells[4, Chr(b + 2)] = "Average Excution rate per channel";
+            workSheetGlobal.Range[Chr(b + 1) + "4", Chr(b + 2) + "4"].Interior.Color = allSheets[whichSheet].color;
+            workSheetGlobal.Range[Chr(b + 1) + "4", Chr(b + 2) + "4"].Font.Color = Excel.XlRgbColor.rgbWhite;
 
 
             //创建总表头
@@ -277,20 +278,29 @@ namespace ExportExcelTools
             int c = 1;
             foreach(String channelName in sheetChannels)
             {
-                workSheetGlobal.Cells[c+4, "A"] = "Station " + c.ToString() + " = " + channelName;
+                int cellNumber = c + 4;
+                workSheetGlobal.Cells[cellNumber, "A"] = "Station " + c.ToString() + " = " + channelName;
+                for (int i = Asc("B"); i < b; i++)
+                {
+                    workSheetGlobal.Cells[cellNumber, Chr(i)] = "=COUNTIFS('" + allSheets[whichSheet].title + date + "'!H:H,\"" + channelName + "\",'" + allSheets[whichSheet].title + date + "'!B:B,B" + (cellNumber - 1) + ")";
+                }
                 c++;
             }
-            workSheetGlobal.Cells[c + 5, "A"] = "TOTAL";
-            workSheetGlobal.Range["A" + (c + 5).ToString(), Chr(b + 3).ToString() + (c + 5).ToString()].Interior.Color = allSheets[whichSheet].color;
-            workSheetGlobal.Range["A" + (c + 5).ToString(), Chr(b + 3).ToString() + (c + 5).ToString()].Font.Color = Excel.XlRgbColor.rgbWhite;
+
+            workSheetGlobal.Cells[c + 4, "A"] = "TOTAL";
+            workSheetGlobal.Range["A" + (c + 4).ToString(), Chr(b + 2).ToString() + (c + 4).ToString()].Interior.Color = allSheets[whichSheet].color;
+            workSheetGlobal.Range["A" + (c + 4).ToString(), Chr(b + 2).ToString() + (c + 4).ToString()].Font.Color = Excel.XlRgbColor.rgbWhite;
+            for (int i = Asc("B"); i < b + 3; i++)
+            {
+                workSheetGlobal.Cells[c+4,Chr(i)]="=SUM("+Chr(i)+"5:"+Chr(i)+(c+3)+")";
+            }
 
 
 
 
 
 
-
-            workSheet.UsedRange.Font.Name = "dengxian";//设置字体
+                workSheet.UsedRange.Font.Name = "dengxian";//设置字体
             workSheet.UsedRange.Font.Size = 11;//设置字体大小
             workSheet.Columns.AutoFit();//单元格高度宽度自动
 
