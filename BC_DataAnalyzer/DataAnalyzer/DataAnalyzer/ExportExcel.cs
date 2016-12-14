@@ -39,7 +39,7 @@ namespace ExportExcelTools
             }
             excelApp.DisplayAlerts = false;
             // Make the object visible.
-            excelApp.Visible = true;
+            excelApp.Visible = false;
 
             // Create a new, empty workbook and add it to the collection returned 
             // by property Workbooks. The new workbook becomes the active workbook.
@@ -143,33 +143,33 @@ namespace ExportExcelTools
 
 
 
-            //for (int i = 0; i < dataItems.Rows.Count; i++)
-            //{
-            //    string title = dataItems.Rows[i]["title"].ToString();
+            for (int i = 0; i < dataItems.Rows.Count; i++)
+            {
+                string title = dataItems.Rows[i]["title"].ToString();
 
-            //    string timeStr = dataItems.Rows[i]["Time"].ToString();
-            //    double timeSeconds = TimeSpan.Parse(timeStr).TotalSeconds;//time的秒数
+                string timeStr = dataItems.Rows[i]["Time"].ToString();
+                double timeSeconds = TimeSpan.Parse(timeStr).TotalSeconds;//time的秒数
 
-            //    string durationStr = dataItems.Rows[i]["duration"].ToString();
-            //    double durationSeconds = TimeSpan.Parse(durationStr).TotalSeconds;//duration的秒数
+                string durationStr = dataItems.Rows[i]["duration"].ToString();
+                double durationSeconds = TimeSpan.Parse(durationStr).TotalSeconds;//duration的秒数
 
-            //    double adEndTime = timeSeconds + durationSeconds;//广告结束时间
-            //    string channelname1 = dataItems.Rows[i]["ChannelName"].ToString();
-            //    //去除重复广告
-            //    for (int j = i + 1; j < dataItems.Rows.Count;)
-            //    {
-            //        string nowTimeStr = dataItems.Rows[j]["Time"].ToString();
-            //        string nowTitle = dataItems.Rows[j]["title"].ToString();
-            //        string channelname2 = dataItems.Rows[j]["ChannelName"].ToString();
-            //        double nowtimeSeconds = TimeSpan.Parse(nowTimeStr).TotalSeconds;
-            //        if (nowtimeSeconds <= adEndTime + 1 && title == nowTitle)
-            //        {
-            //            dataItems.Rows[j].Delete();
-            //            j--;
-            //        }
-            //        j++;
-            //    }
-            //}
+                double adEndTime = timeSeconds + durationSeconds;//广告结束时间
+                string channelname1 = dataItems.Rows[i]["ChannelName"].ToString();
+                //去除重复广告
+                for (int j = i + 1; j < dataItems.Rows.Count;)
+                {
+                    string nowTimeStr = dataItems.Rows[j]["Time"].ToString();
+                    string nowTitle = dataItems.Rows[j]["title"].ToString();
+                    string channelname2 = dataItems.Rows[j]["ChannelName"].ToString();
+                    double nowtimeSeconds = TimeSpan.Parse(nowTimeStr).TotalSeconds;
+                    if (nowtimeSeconds <= adEndTime + 1 && title == nowTitle && channelname2 == channelname1)
+                    {
+                        dataItems.Rows[j].Delete();
+                        j--;
+                    }
+                    j++;
+                }
+            }
 
 
 
@@ -276,14 +276,17 @@ namespace ExportExcelTools
 
 
             int c = 1;
+            int d = Asc("B");
             foreach(String channelName in sheetChannels)
             {
                 int cellNumber = c + 4;
                 workSheetGlobal.Cells[cellNumber, "A"] = "Station " + c.ToString() + " = " + channelName;
-                for (int i = Asc("B"); i < b; i++)
+                for ( ;d < b;d++)
                 {
-                    workSheetGlobal.Cells[cellNumber, Chr(i)] = "=COUNTIFS('" + allSheets[whichSheet].title + date + "'!H:H,\"" + channelName + "\",'" + allSheets[whichSheet].title + date + "'!B:B,B" + (cellNumber - 1) + ")";
+                    workSheetGlobal.Cells[cellNumber, Chr(d)] = "=COUNTIFS('" + allSheets[whichSheet].title + date + "'!H:H,\"" + channelName + "\",'" + allSheets[whichSheet].title + date + "'!B:B,"+Chr(d)+"4)";
                 }
+                workSheetGlobal.Cells[cellNumber,Chr(d)] = "=SUM(B"+cellNumber+":"+Chr(d-1)+cellNumber+")";
+                d = Asc("B");
                 c++;
             }
 
@@ -300,7 +303,7 @@ namespace ExportExcelTools
 
 
 
-                workSheet.UsedRange.Font.Name = "dengxian";//设置字体
+            workSheet.UsedRange.Font.Name = "dengxian";//设置字体
             workSheet.UsedRange.Font.Size = 11;//设置字体大小
             workSheet.Columns.AutoFit();//单元格高度宽度自动
 

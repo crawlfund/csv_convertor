@@ -89,7 +89,7 @@ namespace DataAnalyzer
         private void readFilesTodtTable(String filePath)
         {
              System.Data.DataTable newdtTable= CsvHelper.CsvHelper.CsvParsingHelper.CsvToDataTable(filePath, true);
-
+             dtTable.Merge(newdtTable);
         }
         private void analyzeFile(System.Data.DataTable dtTable)
         {

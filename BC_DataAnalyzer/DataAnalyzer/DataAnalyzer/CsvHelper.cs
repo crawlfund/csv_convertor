@@ -47,7 +47,7 @@ namespace CsvHelper
             /// <param name="csv">包含以","分隔的CSV数据的字符串</param>
             /// <param name="isRowHead">是否将第一行作为字段名</param>
             /// <returns></returns>
-            private static DataTable ToDataTable(string csv, bool isRowHead)
+            public static DataTable ToDataTable(string csv, bool isRowHead)
             {
                 DataTable dt = null;
                 if (!string.IsNullOrEmpty(csv))
