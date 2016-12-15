@@ -7,3 +7,4 @@ C:\Users\owlwang\Desktop\B&C\BC_DataAnalyzer\DataAnalyzer\DataAnalyzer\obj\Relea
 C:\Users\owlwang\Desktop\B&C\BC_DataAnalyzer\DataAnalyzer\DataAnalyzer\obj\Release\DataAnalyzer.csproj.GenerateResource.Cache
 C:\Users\owlwang\Desktop\B&C\BC_DataAnalyzer\DataAnalyzer\DataAnalyzer\obj\Release\DataAnalyzer.exe
 C:\Users\owlwang\Desktop\B&C\BC_DataAnalyzer\DataAnalyzer\DataAnalyzer\obj\Release\DataAnalyzer.pdb
+C:\Users\owlwang\Desktop\B&C\BC_DataAnalyzer\DataAnalyzer\DataAnalyzer\obj\Release\DataAnalyzer.csprojResolveAssemblyReference.cache

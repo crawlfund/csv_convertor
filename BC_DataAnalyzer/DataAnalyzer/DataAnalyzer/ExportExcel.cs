@@ -56,6 +56,10 @@ namespace ExportExcelTools
             workBook.Worksheets.Add();
             workBook.Worksheets.Add();
             workBook.Worksheets.Add();
+            //多余的bug测试
+            workBook.Worksheets.Add();
+            workBook.Worksheets.Add();
+
         }
         static public void saveExcel(string filePath)
         {
