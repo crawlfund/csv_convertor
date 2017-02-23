@@ -73,13 +73,13 @@ namespace ExportExcelTools
         }
 
 
-        static public double convertTimeToSecond(string timeString)
+        static public TimeSpan convertTimeToSecond(string timeString)
         {
 
             TimeSpan ts = new TimeSpan(Int32.Parse(timeString.Split(':')[0]),
                                         Int32.Parse(timeString.Split(':')[1]),
                                         Int32.Parse(timeString.Split(':')[2]));
-            return ts.TotalSeconds;
+            return ts;
         }
         static public void exportContent(System.Data.DataTable dataItems, int whichSheet,string date, String[] sheetTitles, String[] sheetChannels)
         {
@@ -174,15 +174,14 @@ namespace ExportExcelTools
             //--------    去除无效广告 -------------------
             for (int i = 0; i < dataItems.Rows.Count; )
             {
-                Console.WriteLine("************\t" + i.ToString() + "\t*************");
                 string title = dataItems.Rows[i]["title"].ToString();
 
 
                 string timeStr = dataItems.Rows[i]["Time"].ToString();
-                double timeSeconds = convertTimeToSecond(timeStr);//time的秒数
+                double timeSeconds = convertTimeToSecond(timeStr).TotalSeconds;//time的秒数
 
                 string durationStr = dataItems.Rows[i]["duration"].ToString();
-                int durationSeconds = (int)convertTimeToSecond(durationStr);//duration的秒数
+                int durationSeconds = (int)convertTimeToSecond(durationStr).TotalSeconds;//duration的秒数
 
                 double adEndTime = timeSeconds + durationSeconds;//广告结束时间
 
@@ -204,7 +203,7 @@ namespace ExportExcelTools
                     string nowTimeStr = dataItems.Rows[j]["Time"].ToString();
                     string channelname2 = dataItems.Rows[j]["ChannelName"].ToString();//现在遍历到的channelname
 
-                    double nowtimeSeconds = convertTimeToSecond(nowTimeStr);
+                    double nowtimeSeconds = convertTimeToSecond(nowTimeStr).TotalSeconds;
 
                     if (nowtimeSeconds <= (adEndTime + 10) && title == nowTitle && channelname2 == channelname1)//如果channelname和title都一样count+1.
                     {
@@ -214,12 +213,7 @@ namespace ExportExcelTools
                 }
                 if ((timesLimit == 3 && count <= 1) || (timesLimit>3 && timesLimit <= 5 && count < 3) || (timesLimit > 5 && count < 4))
                 {
-                    Console.WriteLine("Delete----------------");
-                    Console.WriteLine(dataItems.Rows[i]["Time"].ToString());
-                    Console.WriteLine(dataItems.Rows[i]["title"].ToString());
-                    Console.WriteLine(dataItems.Rows[i]["duration"].ToString());
-                    Console.WriteLine(timesLimit);
-                    Console.WriteLine(count);
+
                     for (int k = 0; k < count; k++)
                     {
 
@@ -263,10 +257,10 @@ namespace ExportExcelTools
                 string title = dataItems.Rows[i]["title"].ToString();
 
                 string timeStr = dataItems.Rows[i]["Time"].ToString();
-                double timeSeconds = convertTimeToSecond(timeStr);//time的秒数
+                double timeSeconds = convertTimeToSecond(timeStr).TotalSeconds;//time的秒数
 
                 string durationStr = dataItems.Rows[i]["duration"].ToString();
-                double durationSeconds = convertTimeToSecond(durationStr);//duration的秒数
+                double durationSeconds = convertTimeToSecond(durationStr).TotalSeconds;//duration的秒数
 
                 double adEndTime = timeSeconds + durationSeconds;//广告结束时间
                 string channelname1 = dataItems.Rows[i]["ChannelName"].ToString();
@@ -275,7 +269,7 @@ namespace ExportExcelTools
                     string nowTimeStr = dataItems.Rows[j]["Time"].ToString();
                     string nowTitle = dataItems.Rows[j]["title"].ToString();
                     string channelname2 = dataItems.Rows[j]["ChannelName"].ToString();
-                    double nowtimeSeconds = convertTimeToSecond(nowTimeStr);
+                    double nowtimeSeconds = convertTimeToSecond(nowTimeStr).TotalSeconds;
                     if (nowtimeSeconds <= adEndTime + 10 && title == nowTitle && channelname2 == channelname1)
                     {
                         dataItems.Rows[j].Delete();
@@ -287,7 +281,92 @@ namespace ExportExcelTools
             //----------------------------------------------------------------------------
 
 
-              //这个地方是输出报表主体的
+
+
+            int startPosition = 7;
+            int a = 10;
+            DataTable tempTable = dataItems.DefaultView.ToTable(true, "ChannelName");
+            List<string> channelNames = new List<string>();
+            foreach (DataRow iter in tempTable.Rows)
+            {
+                channelNames.Add(iter["ChannelName"].ToString());
+            }
+            foreach (string channelName in channelNames)
+            {            
+                // Call to fill the color for the chart's title
+
+
+                workSheet.Range["J" + startPosition.ToString()].Interior.Color = allSheets[whichSheet].color;
+                workSheet.Range["J" + startPosition.ToString()].Font.Color = Excel.XlRgbColor.rgbWhite;
+                workSheet.Range["J" + (startPosition + 2).ToString(), "P"+(startPosition + 2).ToString()].Interior.Color = allSheets[whichSheet].color;
+                workSheet.Range["J" + (startPosition + 2).ToString(), "P" + (startPosition + 2).ToString()].Font.Color = Excel.XlRgbColor.rgbWhite;
+                workSheet.Range["L" + (startPosition + 1).ToString(), "N" + (startPosition + 1).ToString()].Interior.Color = allSheets[whichSheet].color;
+                workSheet.Range["L" + (startPosition + 1).ToString(), "N" + (startPosition + 1).ToString()].Font.Color = Excel.XlRgbColor.rgbWhite;
+                //这个地方是小报表的字段
+                workSheet.Cells[startPosition, "J"] = "Quantitative daily report";
+                workSheet.Cells[startPosition, "K"] = channelName;
+                workSheet.Cells[startPosition + 1, "L"] = "Broadcasted";
+                workSheet.Cells[startPosition + 1, "N"] = "Ordered";
+                workSheet.Cells[startPosition + 2, "J"] = "Commercials";
+                workSheet.Cells[startPosition + 2, "K"] = "Duration";
+                workSheet.Cells[startPosition + 2, "L"] = "Qty";
+                workSheet.Cells[startPosition + 2, "M"] = "Time spent";
+                workSheet.Cells[startPosition + 2, "N"] = "";
+                workSheet.Cells[startPosition + 2, "O"] = "Variation";
+                workSheet.Cells[startPosition + 2, "P"] = "Execution rate";
+                foreach (String title in sheetTitles)
+                {
+                    //这个地方是处理小报表的格式和内容
+                    workSheet.Cells[a, "J"] = title;
+
+                    DataRow[] rowdata = dataItems.Select("title = '" + title + "'");
+                    if (rowdata.Length != 0)
+                    {
+                        workSheet.Cells[a, "K"] = rowdata[0]["duration"];
+
+                        workSheet.Range["J" + a.ToString()].Interior.Color = allSheets[whichSheet].color;
+                        workSheet.Range["J" + a.ToString()].Font.Color = Excel.XlRgbColor.rgbWhite;
+
+                        workSheet.Cells[a, "L"] = "=COUNTIFS(B:B,J" + a + ",H:H,K" + startPosition + ")";
+                        workSheet.Cells[a, "M"] = "=TEXT(K" + a.ToString() + "*" + "L" + a.ToString()+",\"hh:mm:ss\")";
+
+
+                        workSheet.Cells[a, "O"] = "=N" + a.ToString() + "-" + "L" + a.ToString();
+                        workSheet.Cells[a, "P"] = "=TEXT(ROUND(L" + a.ToString() + "/" + "N" + a.ToString() + @",2)," + "\"0.00%\"" + ")";
+                        a++;
+
+                    }
+                }
+
+                int channelNumbers = dataItems.DefaultView.ToTable(true, "title").Rows.Count;
+                workSheet.Cells[a, "J"] = "Total";
+                workSheet.Cells[a, "K"] = "=SUM(K" + (startPosition + 3).ToString() + ":K" + (startPosition + 2 + channelNumbers).ToString() + ")";
+                workSheet.Cells[a, "L"] = "=SUM(L" + (startPosition + 3).ToString() + ":L" + (startPosition + 2 + channelNumbers).ToString() + ")";
+
+
+                string tempString = "=TEXT(";
+                for(int i =0;i<channelNumbers;i++)
+                {
+                    tempString += "K"+(startPosition + 3+i).ToString()+ "*" + "L" + (startPosition + 3+i).ToString();
+                    if(i!=(channelNumbers-1))
+                    {
+                        tempString += "+";
+                    }
+                }
+                tempString+=",\"hh:mm:ss\")";
+
+                workSheet.Cells[a, "M"] = tempString;
+                workSheet.Cells[a, "N"] = "=SUM(N" + (startPosition + 3).ToString() + ":N" + (startPosition + 2 + channelNumbers).ToString() + ")";
+                workSheet.Cells[a, "O"] = "=SUM(N" + (startPosition + 3).ToString() + ":O" + (startPosition + 2 + channelNumbers).ToString() + ")";
+                workSheet.Range["J" + a.ToString(), "P" + a.ToString()].Interior.Color = allSheets[whichSheet].color;
+                workSheet.Range["J" + a.ToString(), "P" + a.ToString()].Font.Color = Excel.XlRgbColor.rgbWhite;
+                Console.WriteLine("&&&&&&&&&&&&&&&&&&&&&&&&&&");
+                Console.WriteLine(channelNumbers);
+                startPosition += 8;
+                a += 5;
+
+            }
+            //这个地方是输出报表主体的
             var row = 1;
             foreach (System.Data.DataRow item in dataItems.Rows)
             {
@@ -303,54 +382,13 @@ namespace ExportExcelTools
 
             }
 
-
-
-             //这个地方是小报表的字段
-
-            workSheet.Cells[7, "J"] = "Quantitative daily report";
-            workSheet.Cells[8, "L"] = "Broadcasted";
-            workSheet.Cells[8, "N"]="Ordered";
-            workSheet.Cells[9, "J"] = "Commercials";
-            workSheet.Cells[9, "K"] = "Duration";
-            workSheet.Cells[9, "L"] = "Qty";
-            workSheet.Cells[9, "M"] = "Time spent";
-            workSheet.Cells[9, "N"] = "";
-            workSheet.Cells[9, "O"] = "Variation";
-            workSheet.Cells[9, "P"] = "Execution rate";
-
-
-
-            
-            int a = 10; 
             int b = Asc("B");
-            foreach(String title in sheetTitles)
+            //这个地方是处理总表的表头
+            foreach (String title in sheetTitles)
             {
-                //这个地方是处理小报表的格式和内容
-                workSheet.Cells[a, "J"] = title;
-                
-                DataRow[] rowdata = dataItems.Select("title = '"+title+"'");
-                if (rowdata.Length != 0)
-                {
-                    workSheet.Cells[a, "K"] = rowdata[0]["duration"];
-
-                    workSheet.Range["J" + a.ToString()].Interior.Color = allSheets[whichSheet].color;
-                    workSheet.Range["J" + a.ToString()].Font.Color = Excel.XlRgbColor.rgbWhite;
-
-                    workSheet.Cells[a, "L"] = "=COUNTIF(B:B,J" + a + ")";
-                    workSheet.Cells[a, "M"] = "=TEXT((HOUR(K" + a.ToString() + ")*L" + a.ToString() + "*3600+MINUTE(K" + a.ToString() + ")*L" + a.ToString() + "*60+SECOND(K" + a.ToString() + ")*L" + a.ToString() + @")/24/3600,""hh::mm:ss"")";
-
-
-                    workSheet.Cells[a, "O"] = "=N" + a.ToString() + "-" + "L" + a.ToString();
-                    workSheet.Cells[a, "P"] = "=TEXT(ROUND(L" + a.ToString() + "/" + "N" + a.ToString() + @",2)," + "\"0.00%\"" + ")";
-                    a++;
-                    //这个地方是处理总表的表头
-                    workSheetGlobal.Cells[4, Chr(b)] = title;
-                    b++;
-                }
+                workSheetGlobal.Cells[4, Chr(b)] = title;
+                b++;
             }
-            workSheet.Cells[a, "J"] = "Total";
-            workSheet.Range["J" + a.ToString(), "P" + a.ToString()].Interior.Color = allSheets[whichSheet].color;
-            workSheet.Range["J" + a.ToString(),"P"+a.ToString()].Font.Color = Excel.XlRgbColor.rgbWhite;
             workSheetGlobal.Cells[4, Chr(b)] = "Total";
             workSheetGlobal.Cells[4, Chr(b + 1)] = "Time spent per channel";
             workSheetGlobal.Cells[4, Chr(b + 2)] = "Average Execution rate per channel";
@@ -370,13 +408,8 @@ namespace ExportExcelTools
 
 
 
-            // Call to fill the color for the chart's title
-            workSheet.Range["J7"].Interior.Color = allSheets[whichSheet].color;
-            workSheet.Range["J7"].Font.Color = Excel.XlRgbColor.rgbWhite;
-            workSheet.Range["L8", "N8"].Interior.Color = allSheets[whichSheet].color;
-            workSheet.Range["L8", "N8"].Font.Color = Excel.XlRgbColor.rgbWhite;
-            workSheet.Range["J9", "P9"].Interior.Color = allSheets[whichSheet].color;
-            workSheet.Range["J9", "P9"].Font.Color = Excel.XlRgbColor.rgbWhite;
+
+
 
 
 
