@@ -87,14 +87,14 @@ namespace ExportExcelTools
             var allSheets = new List<DefSheet>{
                 new DefSheet{
                     title="VODACOM du ",
-                    color=(UInt32)0xC07000,
-                    logo=@"Vodacom.gif",
+                    color=(UInt32)0x0000FF,
+                    logo=@"Vodacom.png",
 
                 }, 
                 new DefSheet{
                     title="ORANGE du ",
                     color=(UInt32)0x317DED,
-                    logo=@"Orange.jpg",
+                    logo=@"Orange.png",
 
                 },
                 new DefSheet{
@@ -105,26 +105,26 @@ namespace ExportExcelTools
                 new DefSheet{
                     title="AFRICELL du ",
                     color=(UInt32)0xA03070,
-                    logo=@"Africell.jpg",
+                    logo=@"Africell.png",
 
                 },
                 new DefSheet{
                     title="MARSAVCO du ",
                     color=(UInt32)0x3BA707,
-                    logo=@"Marsavco.gif",
+                    logo=@"Marsavco.png",
                 },
 
                 //global channels report
                 new DefSheet{
                     title="GLOBAL DAILY REPORT VODACOM",
-                    color= (UInt32)0xC07000,
-                    logo=@"Vodacom.gif",
+                    color= (UInt32)0x0000FF,
+                    logo=@"Vodacom.png",
 
                 },
                 new DefSheet{
                     title="GLOBAL DAILY REPORT ORANGE",
                     color= (UInt32)0x317DED,
-                    logo=@"Orange.jpg",
+                    logo=@"Orange.png",
                 },
                 new DefSheet{
                     title="GLOBAL DAILY REPORT AIRTEL",
@@ -134,12 +134,12 @@ namespace ExportExcelTools
                 new DefSheet{
                     title="GLOBAL DAILY REPORT AFRICEL",
                     color= (UInt32)0xA03070,
-                    logo=@"Africell.jpg",
+                    logo=@"Africell.png",
                 },
                 new DefSheet{
                     title="GLOBAL DAILY REPORT MARSAVC",
                     color= (UInt32)0x3BA707,
-                    logo=@"Marsavco.gif",
+                    logo=@"Marsavco.png",
                 },
 
             };
@@ -321,7 +321,7 @@ namespace ExportExcelTools
 
 
             
-            int a = 10;
+            int a = 10; 
             int b = Asc("B");
             foreach(String title in sheetTitles)
             {
