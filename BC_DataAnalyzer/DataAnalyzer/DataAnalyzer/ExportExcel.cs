@@ -156,20 +156,24 @@ namespace ExportExcelTools
 
 
             // Establish column headings in cells A1 and B1.
-            workSheet.Cells[1, "A"] = "Time";
-            workSheet.Cells[1, "B"] = "Commercial";
-            workSheet.Cells[1, "C"] = "Company";
-            workSheet.Cells[1, "D"] = "Duration";
-            workSheet.Cells[1, "E"] = "Type1";
-            workSheet.Cells[1, "F"] = "Type2";
-            workSheet.Cells[1, "G"] = "Execution";
-            workSheet.Cells[1, "H"] = "ChannelName";
+            int tableStartPosition = 8;
+            workSheet.Cells[tableStartPosition, "A"] = "Time";
+            workSheet.Cells[tableStartPosition, "B"] = "Commercial";
+            workSheet.Cells[tableStartPosition, "C"] = "Company";
+            workSheet.Cells[tableStartPosition, "D"] = "Duration";
+            workSheet.Cells[tableStartPosition, "E"] = "Type1";
+            workSheet.Cells[tableStartPosition, "F"] = "Type2";
+            workSheet.Cells[tableStartPosition, "G"] = "Execution";
+            workSheet.Cells[tableStartPosition, "H"] = "ChannelName";
+            workSheet.Range["A" + tableStartPosition.ToString(), "H" + tableStartPosition.ToString()].Interior.Color = allSheets[whichSheet].color;
+            workSheet.Range["A" + tableStartPosition.ToString(), "H" + tableStartPosition.ToString()].Font.Color = Excel.XlRgbColor.rgbWhite;
 
-            workSheet.Shapes.AddPicture(System.IO.Directory.GetCurrentDirectory()+@"/logo/" + allSheets[whichSheet].logo, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoCTrue, 500, 0, 200, 60);
-            workSheetGlobal.Shapes.AddPicture(System.IO.Directory.GetCurrentDirectory() + @"/logo/" + allSheets[whichSheet+5].logo, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoCTrue, 0, 0, 183, 42);
+
+
+            workSheet.Shapes.AddPicture(System.IO.Directory.GetCurrentDirectory()+@"/logo/" + allSheets[whichSheet].logo, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoCTrue, 0, 0, 188, 90);
+            workSheetGlobal.Shapes.AddPicture(System.IO.Directory.GetCurrentDirectory() + @"/logo/" + allSheets[whichSheet+5].logo, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoCTrue, 0, 0, 125, 58);
             // Call to fill the color for the chart's title
-            workSheet.Range["A1", "H1"].Interior.Color = allSheets[whichSheet].color;
-            workSheet.Range["A1", "H1"].Font.Color = Excel.XlRgbColor.rgbWhite;
+
 
             //--------    去除无效广告 -------------------
             for (int i = 0; i < dataItems.Rows.Count; )
@@ -285,6 +289,7 @@ namespace ExportExcelTools
 
             int startPosition = 7;
             int a = 10;
+            int globalReportPosition = 5;
             DataTable tempTable = dataItems.DefaultView.ToTable(true, "ChannelName");
             List<string> channelNames = new List<string>();
             foreach (DataRow iter in tempTable.Rows)
@@ -360,15 +365,19 @@ namespace ExportExcelTools
                 workSheet.Cells[a, "N"] = "=SUM(N" + (startPosition + 3).ToString() + ":N" + (startPosition + 2 + channelNumbers).ToString() + ")";
                 workSheet.Cells[a, "O"] = "=SUM(N" + (startPosition + 3).ToString() + ":O" + (startPosition + 2 + channelNumbers).ToString() + ")";
                 workSheet.Cells[a, "P"] = "=TEXT(ROUND(L" + (startPosition + 6).ToString() + "/" + "N" + (startPosition + 6).ToString() + @",2)," + "\"0.00%\"" + ")";
+
+                workSheetGlobal.Cells[globalReportPosition, "G"] = "=TEXT(ROUND('" + allSheets[whichSheet].title + date +"'!L"+(startPosition + 6).ToString() + "/'" + allSheets[whichSheet].title + date + "'!N" + (startPosition + 6).ToString() + @",2)," + "\"0.00%\"" + ")";
+                
                 workSheet.Range["J" + a.ToString(), "P" + a.ToString()].Interior.Color = allSheets[whichSheet].color;
                 workSheet.Range["J" + a.ToString(), "P" + a.ToString()].Font.Color = Excel.XlRgbColor.rgbWhite;
 
                 startPosition += 8;
                 a += 5;
+                globalReportPosition += 1;
 
             }
             //这个地方是输出报表主体的
-            var row = 1;
+            var row = 8;
             string tempChannelName="";
             foreach (System.Data.DataRow item in dataItems.Rows)
             {
@@ -475,7 +484,7 @@ namespace ExportExcelTools
             workSheetGlobal.UsedRange.Font.Size = 11;//设置字体大小
 
             workSheetGlobal.Columns.AutoFit();//单元格高度宽度自动
-            workSheetGlobal.get_Range("A:A", System.Type.Missing).EntireColumn.ColumnWidth = 30;
+            workSheetGlobal.get_Range("A:A", System.Type.Missing).EntireColumn.ColumnWidth = 20;
 
 
 
