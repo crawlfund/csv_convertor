@@ -302,6 +302,7 @@ namespace ExportExcelTools
                 workSheet.Range["J" + (startPosition + 2).ToString(), "P" + (startPosition + 2).ToString()].Font.Color = Excel.XlRgbColor.rgbWhite;
                 workSheet.Range["L" + (startPosition + 1).ToString(), "N" + (startPosition + 1).ToString()].Interior.Color = allSheets[whichSheet].color;
                 workSheet.Range["L" + (startPosition + 1).ToString(), "N" + (startPosition + 1).ToString()].Font.Color = Excel.XlRgbColor.rgbWhite;
+
                 //这个地方是小报表的字段
                 workSheet.Cells[startPosition, "J"] = "Quantitative daily report";
                 workSheet.Cells[startPosition, "K"] = channelName;
@@ -334,7 +335,6 @@ namespace ExportExcelTools
                         workSheet.Cells[a, "O"] = "=N" + a.ToString() + "-" + "L" + a.ToString();
                         workSheet.Cells[a, "P"] = "=TEXT(ROUND(L" + a.ToString() + "/" + "N" + a.ToString() + @",2)," + "\"0.00%\"" + ")";
                         a++;
-
                     }
                 }
 
@@ -356,20 +356,34 @@ namespace ExportExcelTools
                 tempString+=",\"hh:mm:ss\")";
 
                 workSheet.Cells[a, "M"] = tempString;
+
                 workSheet.Cells[a, "N"] = "=SUM(N" + (startPosition + 3).ToString() + ":N" + (startPosition + 2 + channelNumbers).ToString() + ")";
                 workSheet.Cells[a, "O"] = "=SUM(N" + (startPosition + 3).ToString() + ":O" + (startPosition + 2 + channelNumbers).ToString() + ")";
+                workSheet.Cells[a, "P"] = "=TEXT(ROUND(L" + (startPosition + 6).ToString() + "/" + "N" + (startPosition + 6).ToString() + @",2)," + "\"0.00%\"" + ")";
                 workSheet.Range["J" + a.ToString(), "P" + a.ToString()].Interior.Color = allSheets[whichSheet].color;
                 workSheet.Range["J" + a.ToString(), "P" + a.ToString()].Font.Color = Excel.XlRgbColor.rgbWhite;
-                Console.WriteLine("&&&&&&&&&&&&&&&&&&&&&&&&&&");
-                Console.WriteLine(channelNumbers);
+
                 startPosition += 8;
                 a += 5;
 
             }
             //这个地方是输出报表主体的
             var row = 1;
+            string tempChannelName="";
             foreach (System.Data.DataRow item in dataItems.Rows)
             {
+                if (tempChannelName!="" && tempChannelName != item["ChannelName"].ToString())
+                {
+                    workSheet.Cells[row, "A"] = "";
+                    workSheet.Cells[row, "B"] = "";
+                    workSheet.Cells[row, "C"] = "";
+                    workSheet.Cells[row, "D"] = "";
+                    workSheet.Cells[row, "E"] = "";
+                    workSheet.Cells[row, "F"] = "";
+                    workSheet.Cells[row, "G"] = "";
+                    workSheet.Cells[row, "H"] = "";
+                }
+                tempChannelName = item["ChannelName"].ToString();
                 row++;
                 workSheet.Cells[row, "A"] = item["Time"];
                 workSheet.Cells[row, "B"] = item["title"];
@@ -384,7 +398,15 @@ namespace ExportExcelTools
 
             int b = Asc("B");
             //这个地方是处理总表的表头
-            foreach (String title in sheetTitles)
+
+            DataTable tempTitleTable = dataItems.DefaultView.ToTable(true, "title");
+            List<string> titleNames = new List<string>();
+            foreach (DataRow it in tempTitleTable.Rows)
+            {
+                titleNames.Add(it["title"].ToString());
+            }
+
+            foreach (String title in titleNames)
             {
                 workSheetGlobal.Cells[4, Chr(b)] = title;
                 b++;
@@ -411,22 +433,13 @@ namespace ExportExcelTools
 
 
 
-
-
-
-
-
-
-
-
-
             //下面是global报表
 
 
 
             int c = 1;
             int d = Asc("B");
-            foreach(String channelName in sheetChannels)
+            foreach (String channelName in channelNames)
             {
                 int cellNumber = c + 4;
                 workSheetGlobal.Cells[cellNumber, "A"] = "Station " + c.ToString() + " = " + channelName;
