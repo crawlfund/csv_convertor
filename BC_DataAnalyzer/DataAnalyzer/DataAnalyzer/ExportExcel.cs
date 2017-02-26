@@ -349,7 +349,7 @@ namespace ExportExcelTools
 
 
                         workSheet.Cells[a, "O"] = "=N" + a.ToString() + "-" + "L" + a.ToString();
-                        workSheet.Cells[a, "P"] = "=TEXT(ROUND(L" + a.ToString() + "/" + "N" + a.ToString() + @",2)," + "\"0.00%\"" + ")";
+                        workSheet.Cells[a, "P"] = "=IF(N"+a.ToString()+"=0,0,TEXT(ROUND(L" + a.ToString() + "/" + "N" + a.ToString() + @",2)," + "\"0.00%\"" + "))";
                         a++;
                     }
                 }
@@ -375,9 +375,9 @@ namespace ExportExcelTools
 
                 workSheet.Cells[a, "N"] = "=SUM(N" + (startPosition + 3).ToString() + ":N" + (startPosition + 2 + titleNumbers).ToString() + ")";
                 workSheet.Cells[a, "O"] = "=SUM(N" + (startPosition + 3).ToString() + ":O" + (startPosition + 2 + titleNumbers).ToString() + ")";
-                workSheet.Cells[a, "P"] = "=TEXT(ROUND(L" + (startPosition + 3 + titleNumbers).ToString() + "/" + "N" + (startPosition + 3 + titleNumbers).ToString() + @",2)," + "\"0.00%\"" + ")";
+                workSheet.Cells[a, "P"] = "=IF(N" + (startPosition + 3 + titleNumbers).ToString() + "=0,0,TEXT(ROUND(L" + (startPosition + 3 + titleNumbers).ToString() + "/" + "N" + (startPosition + 3 + titleNumbers).ToString() + @",2)," + "\"0.00%\"" + "))";
 
-                workSheetGlobal.Cells[globalReportPosition, Chr(Asc("B")+titleNumbers+2)] = "=TEXT(ROUND('" + allSheets[whichSheet].title + date +"'!L"+(startPosition + 3 + titleNumbers).ToString() + "/'" + allSheets[whichSheet].title + date + "'!N" + (startPosition + 3 + titleNumbers).ToString() + @",2)," + "\"0.00%\"" + ")";
+                workSheetGlobal.Cells[globalReportPosition, Chr(Asc("B")+titleNumbers+2)] ="=IF('" + allSheets[whichSheet].title + date + "'!N" + (startPosition + 3 + titleNumbers).ToString()+ "=0,0,TEXT(ROUND('" + allSheets[whichSheet].title + date +"'!L"+(startPosition + 3 + titleNumbers).ToString() + "/'" + allSheets[whichSheet].title + date + "'!N" + (startPosition + 3 + titleNumbers).ToString() + @",2)," + "\"0.00%\"" + "))";
                 
                 workSheet.Range["J" + a.ToString(), "P" + a.ToString()].Interior.Color = allSheets[whichSheet].color;
                 workSheet.Range["J" + a.ToString(), "P" + a.ToString()].Font.Color = Excel.XlRgbColor.rgbWhite;
@@ -477,8 +477,9 @@ namespace ExportExcelTools
             }
 
             //Console.WriteLine("=TEXT(SUMPRODUCT(--" + Chr(b+1) + "5:" + Chr(b+1) + (c + 3).ToString() + "),\"[h]:mm:ss\")");
+            //"=IF(N"+a.ToString()+"=0,0,TEXT(ROUND(L" + a.ToString() + "/" + "N" + a.ToString() + @",2)," + "\"0.00%\"" + "))";
             workSheetGlobal.Cells[c + 4, Chr(b+1)] = "=TEXT(SUMPRODUCT(--" + Chr(b+1) + "5:" + Chr(b+1) + (c + 3).ToString() + "),\"[h]:mm:ss\")";
-            workSheetGlobal.Cells[c + 4, Chr(b + 2)] = "=TEXT(SUMPRODUCT(--" + Chr(b + 2) + "5:" + Chr(b + 2) + (c + 3).ToString() + ")/"+(c-1).ToString()+",\"0.00%\")";
+            workSheetGlobal.Cells[c + 4, Chr(b + 2)] ="=TEXT(SUMPRODUCT(--" + Chr(b + 2) + "5:" + Chr(b + 2) + (c + 3).ToString() + ")/"+(c-1).ToString()+",\"0.00%\")";
 
 
 
