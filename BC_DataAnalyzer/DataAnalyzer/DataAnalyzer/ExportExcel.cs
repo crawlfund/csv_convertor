@@ -290,12 +290,23 @@ namespace ExportExcelTools
             int startPosition = 7;
             int a = 10;
             int globalReportPosition = 5;
-            DataTable tempTable = dataItems.DefaultView.ToTable(true, "ChannelName");
+            DataTable tempChannelTable = dataItems.DefaultView.ToTable(true, "ChannelName");
             List<string> channelNames = new List<string>();
-            foreach (DataRow iter in tempTable.Rows)
+
+            foreach (DataRow iter in tempChannelTable.Rows)
             {
                 channelNames.Add(iter["ChannelName"].ToString());
             }
+
+
+
+            DataTable tempTitleTable = dataItems.DefaultView.ToTable(true, "title");
+            List<string> titleNames = new List<string>();
+            foreach (DataRow it in tempTitleTable.Rows)
+            {
+                titleNames.Add(it["title"].ToString());
+            }
+
             foreach (string channelName in channelNames)
             {            
                 // Call to fill the color for the chart's title
@@ -320,7 +331,7 @@ namespace ExportExcelTools
                 workSheet.Cells[startPosition + 2, "N"] = "";
                 workSheet.Cells[startPosition + 2, "O"] = "Variation";
                 workSheet.Cells[startPosition + 2, "P"] = "Execution rate";
-                foreach (String title in sheetTitles)
+                foreach (String title in titleNames)
                 {
                     //这个地方是处理小报表的格式和内容
                     workSheet.Cells[a, "J"] = title;
@@ -343,17 +354,17 @@ namespace ExportExcelTools
                     }
                 }
 
-                int channelNumbers = dataItems.DefaultView.ToTable(true, "title").Rows.Count;
+                int titleNumbers = dataItems.DefaultView.ToTable(true, "title").Rows.Count;
                 workSheet.Cells[a, "J"] = "Total";
-                workSheet.Cells[a, "K"] = "=SUM(K" + (startPosition + 3).ToString() + ":K" + (startPosition + 2 + channelNumbers).ToString() + ")";
-                workSheet.Cells[a, "L"] = "=SUM(L" + (startPosition + 3).ToString() + ":L" + (startPosition + 2 + channelNumbers).ToString() + ")";
+                workSheet.Cells[a, "K"] = "=SUM(K" + (startPosition + 3).ToString() + ":K" + (startPosition + 2 + titleNumbers).ToString() + ")";
+                workSheet.Cells[a, "L"] = "=SUM(L" + (startPosition + 3).ToString() + ":L" + (startPosition + 2 + titleNumbers).ToString() + ")";
 
 
                 string tempString = "=TEXT(";
-                for(int i =0;i<channelNumbers;i++)
+                for(int i =0;i<titleNumbers;i++)
                 {
                     tempString += "K"+(startPosition + 3+i).ToString()+ "*" + "L" + (startPosition + 3+i).ToString();
-                    if(i!=(channelNumbers-1))
+                    if(i!=(titleNumbers-1))
                     {
                         tempString += "+";
                     }
@@ -362,8 +373,8 @@ namespace ExportExcelTools
 
                 workSheet.Cells[a, "M"] = tempString;
 
-                workSheet.Cells[a, "N"] = "=SUM(N" + (startPosition + 3).ToString() + ":N" + (startPosition + 2 + channelNumbers).ToString() + ")";
-                workSheet.Cells[a, "O"] = "=SUM(N" + (startPosition + 3).ToString() + ":O" + (startPosition + 2 + channelNumbers).ToString() + ")";
+                workSheet.Cells[a, "N"] = "=SUM(N" + (startPosition + 3).ToString() + ":N" + (startPosition + 2 + titleNumbers).ToString() + ")";
+                workSheet.Cells[a, "O"] = "=SUM(N" + (startPosition + 3).ToString() + ":O" + (startPosition + 2 + titleNumbers).ToString() + ")";
                 workSheet.Cells[a, "P"] = "=TEXT(ROUND(L" + (startPosition + 6).ToString() + "/" + "N" + (startPosition + 6).ToString() + @",2)," + "\"0.00%\"" + ")";
 
                 workSheetGlobal.Cells[globalReportPosition, "G"] = "=TEXT(ROUND('" + allSheets[whichSheet].title + date +"'!L"+(startPosition + 6).ToString() + "/'" + allSheets[whichSheet].title + date + "'!N" + (startPosition + 6).ToString() + @",2)," + "\"0.00%\"" + ")";
@@ -371,9 +382,9 @@ namespace ExportExcelTools
                 workSheet.Range["J" + a.ToString(), "P" + a.ToString()].Interior.Color = allSheets[whichSheet].color;
                 workSheet.Range["J" + a.ToString(), "P" + a.ToString()].Font.Color = Excel.XlRgbColor.rgbWhite;
 
-                startPosition += 8;
-                a += 5;
-                globalReportPosition += 1;
+                startPosition += (titleNumbers+5);//小表每次开始输出的位置
+                a += 5;//小表末尾到下一个小表输出位置的距离
+                globalReportPosition += 1;//总表的输出
 
             }
             //这个地方是输出报表主体的
@@ -408,12 +419,7 @@ namespace ExportExcelTools
             int b = Asc("B");
             //这个地方是处理总表的表头
 
-            DataTable tempTitleTable = dataItems.DefaultView.ToTable(true, "title");
-            List<string> titleNames = new List<string>();
-            foreach (DataRow it in tempTitleTable.Rows)
-            {
-                titleNames.Add(it["title"].ToString());
-            }
+
 
             foreach (String title in titleNames)
             {

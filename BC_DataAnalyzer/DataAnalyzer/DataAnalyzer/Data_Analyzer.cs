@@ -52,7 +52,13 @@ namespace DataAnalyzer
                 {
                     readFilesTodtTable(file);
                 }
+                importButton.Enabled = false;
+                clearFilesButton.Enabled = false;
+                exportButton.Enabled = false;
                 analyzeFile(dtTable);
+                importButton.Enabled = true;
+                clearFilesButton.Enabled = true;
+                exportButton.Enabled = true;
             }
             else
             {

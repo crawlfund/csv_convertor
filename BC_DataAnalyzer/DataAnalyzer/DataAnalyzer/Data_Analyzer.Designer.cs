@@ -116,6 +116,8 @@
             this.Controls.Add(this.exportButton);
             this.Controls.Add(this.importButton);
             this.Controls.Add(this.filesListBox);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
             this.Name = "DataAnalyzerForm";
             this.Text = "Data Analyzer";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
