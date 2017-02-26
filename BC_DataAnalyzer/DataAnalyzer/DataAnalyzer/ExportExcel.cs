@@ -471,13 +471,14 @@ namespace ExportExcelTools
             workSheetGlobal.Cells[c + 4, "A"] = "TOTAL";
             workSheetGlobal.Range["A" + (c + 4).ToString(), Chr(b + 2).ToString() + (c + 4).ToString()].Interior.Color = allSheets[whichSheet].color;
             workSheetGlobal.Range["A" + (c + 4).ToString(), Chr(b + 2).ToString() + (c + 4).ToString()].Font.Color = Excel.XlRgbColor.rgbWhite;
-            for (int i = Asc("B"); i < b + 3; i++)
+            for (int i = Asc("B"); i < b + 1; i++)
             {
                 workSheetGlobal.Cells[c+4,Chr(i)]="=SUM("+Chr(i)+"5:"+Chr(i)+(c+3)+")";
             }
 
-
-
+            //Console.WriteLine("=TEXT(SUMPRODUCT(--" + Chr(b+1) + "5:" + Chr(b+1) + (c + 3).ToString() + "),\"[h]:mm:ss\")");
+            workSheetGlobal.Cells[c + 4, Chr(b+1)] = "=TEXT(SUMPRODUCT(--" + Chr(b+1) + "5:" + Chr(b+1) + (c + 3).ToString() + "),\"[h]:mm:ss\")";
+            workSheetGlobal.Cells[c + 4, Chr(b + 2)] = "=TEXT(SUMPRODUCT(--" + Chr(b + 2) + "5:" + Chr(b + 2) + (c + 3).ToString() + ")/"+(c-1).ToString()+",\"0.00%\")";
 
 
 
