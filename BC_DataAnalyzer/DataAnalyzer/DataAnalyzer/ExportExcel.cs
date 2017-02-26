@@ -375,9 +375,9 @@ namespace ExportExcelTools
 
                 workSheet.Cells[a, "N"] = "=SUM(N" + (startPosition + 3).ToString() + ":N" + (startPosition + 2 + titleNumbers).ToString() + ")";
                 workSheet.Cells[a, "O"] = "=SUM(N" + (startPosition + 3).ToString() + ":O" + (startPosition + 2 + titleNumbers).ToString() + ")";
-                workSheet.Cells[a, "P"] = "=TEXT(ROUND(L" + (startPosition + 6).ToString() + "/" + "N" + (startPosition + 6).ToString() + @",2)," + "\"0.00%\"" + ")";
+                workSheet.Cells[a, "P"] = "=TEXT(ROUND(L" + (startPosition + 3 + titleNumbers).ToString() + "/" + "N" + (startPosition + 3 + titleNumbers).ToString() + @",2)," + "\"0.00%\"" + ")";
 
-                workSheetGlobal.Cells[globalReportPosition, "G"] = "=TEXT(ROUND('" + allSheets[whichSheet].title + date +"'!L"+(startPosition + 6).ToString() + "/'" + allSheets[whichSheet].title + date + "'!N" + (startPosition + 6).ToString() + @",2)," + "\"0.00%\"" + ")";
+                workSheetGlobal.Cells[globalReportPosition, "J"] = "=TEXT(ROUND('" + allSheets[whichSheet].title + date +"'!L"+(startPosition + 3 + titleNumbers).ToString() + "/'" + allSheets[whichSheet].title + date + "'!N" + (startPosition + 3 + titleNumbers).ToString() + @",2)," + "\"0.00%\"" + ")";
                 
                 workSheet.Range["J" + a.ToString(), "P" + a.ToString()].Interior.Color = allSheets[whichSheet].color;
                 workSheet.Range["J" + a.ToString(), "P" + a.ToString()].Font.Color = Excel.XlRgbColor.rgbWhite;
